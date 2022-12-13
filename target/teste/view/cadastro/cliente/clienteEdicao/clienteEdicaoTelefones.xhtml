@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:fragment
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:caesb="http://caesb/jsf">
+				
+	<p:panel header="Telefones" id="panelTelefones">
+												
+	<p:commandButton icon="ui-icon-plus" actionListener="#{bean.cadastrarTelefone()}" 
+		process=":form1:panelTelefones" update=":form1:panelTelefones" />
+					
+          <ui:repeat value="#{bean.telefones}" var="tel">    
+          
+          	<h:panelGrid columns="6">
+		
+				<p:selectOneMenu value="#{tel.tipoTelefone}" converter="#{tipoTelefoneConverter}">  																
+                     <f:selectItem itemLabel="Tipo" />  
+                     <f:selectItems value="#{bean.tiposTelefones}" var="item" itemLabel="#{item.descricao}"  /> 		                         
+                </p:selectOneMenu>  			
+	
+				<caesb:inputNumber value="#{tel.ddd}" size="4" id="ddd" maxlength="2"/>
+				<p:watermark value="ddd" for="ddd"/>
+	
+				<caesb:inputNumber value="#{tel.numero}" size="10" id="num" maxlength="9"/>
+				<p:watermark value="número" for="num"/>
+	
+				<p:commandButton icon="ui-icon-trash" actionListener="#{bean.removerTelefone(tel)}" 
+				process=":form1:panelTelefones" update=":form1:panelTelefones" />
+		
+			</h:panelGrid>       
+		 
+          </ui:repeat>
+                       
+	</p:panel>	
+
+</ui:fragment>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:fragment
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:caesb="http://caesb/jsf">
+
+	<p:panel header="Anexos" id="panelArquivos">
+								
+		<p:commandButton icon="ui-icon-plus" actionListener="#{bean.criarArquivo}" 
+			update=":form2" process="@this" oncomplete="PF('dlgArquivo').show()" />
+						       							
+		<p:dataTable tableStyleClass="layoutAuto" var="item" value="#{bean.arquivos}" emptyMessage="Nenhum arquivo anexo">  
+       					
+	        <p:column headerText="Arquivo">#{item.nome}</p:column>  
+	        <p:column headerText="Descrição">#{item.descricao}</p:column>  
+	        <p:column styleClass="menuBotoes">
+		
+				<caesb:menuButton>
+					<p:menuitem icon="ui-icon-pencil" value="Alterar Descrição" actionListener="#{bean.setArquivo(item)}" 
+						process="@this" update=":form2" oncomplete="PF('dlgArquivo').show()" />				
+							
+					<p:menuitem icon="ui-icon-trash" value="Remover Arquivo" actionListener="#{bean.removerArquivo(item)}" 
+						process="@this" update=":form1:panelArquivos" />
+				</caesb:menuButton>
+				
+			</p:column>  
+        
+        </p:dataTable>
+                        
+	</p:panel>		
+					
+</ui:fragment>

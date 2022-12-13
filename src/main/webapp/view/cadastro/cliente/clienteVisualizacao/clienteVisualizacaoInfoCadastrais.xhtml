@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:fragment
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:caesb="http://caesb/jsf">
+
+	<h:form>
+		<p:toolbar styleClass="menuAba">
+			<p:toolbarGroup align="right">
+			
+				<p:button  icon="ui-icon-pencil" value="Alterar" href="clienteEdicao?id=#{bean.cliente.id}" />  
+				
+			</p:toolbarGroup>
+		</p:toolbar>
+	</h:form>
+	
+	<h:panelGrid columns="2" columnClasses="c2,c2" width="100%">
+	
+		<h:panelGroup>
+			<p:panel header="Dados Básicos">
+			
+				<h:panelGrid columns="2" columnClasses="campo,valor" width="100%">
+								
+	        		<h:outputText value="Ativo:" />
+	        		<h:outputText value="#{bean.cliente.ativo eq true ? 'Sim' : 'Não'}" />
+	        		
+	        		<h:outputText value="CPF:" />
+	        		<h:outputText value="#{bean.cliente.cpf}" converter="#{cpfConverter}"/>
+	        		
+	        		<h:outputText value="E-mail:" />
+	        		<h:outputText value="#{bean.cliente.email}" />
+	        		
+	        		<h:outputText value="Estado Civil:" />
+	        		<h:outputText value="#{bean.cliente.estadoCivil.descricao}" />
+	        	
+	        		<h:outputText value="Data de Nascimento:" />
+	        		<h:outputText value="#{bean.cliente.dataNascimento}">
+		            	<f:convertDateTime pattern="dd/MM/yyyy" />
+		            </h:outputText> 
+	        						
+	        		<h:outputText value="Telefones:" />
+	        		<h:outputText value="#{bean.cliente.telefonesFmt}" />
+		            		        								        		
+				</h:panelGrid>
+			
+			</p:panel>
+			<p:panel header="Endereço">
+			
+				<h:panelGrid columns="2" columnClasses="campo,valor" width="100%">
+							
+	        		<h:outputText value="Logradouro:" />
+	        		<h:outputText value="#{bean.cliente.endereco.logradouro}" />
+	        		
+	        		<h:outputText value="CEP:" />
+	        		<h:outputText value="#{bean.cliente.endereco.cep}"/>
+	        						
+				</h:panelGrid>					
+		
+			</p:panel>
+		</h:panelGroup>
+		<h:panelGroup>
+		
+			<p:panel header="Contatos">
+			
+				<!-- Essa tabela itera diretamente no Set de contatos da entidade Cliente. Isso é feito com 
+				     auxílio da função caesb:asList. Use-a apenas quando a tabela não possue ações internas, 
+				     pois o Set não garante ordem. -->
+			
+				<p:dataTable tableStyleClass="layoutAuto" var="item" value="#{caesb:asList(bean.cliente.contatos)}" emptyMessage="Nenhum contato">  
+		       					
+			        <p:column headerText="Nome">#{item.nome}</p:column>  
+			        <p:column headerText="Telefone">#{item.telefone}</p:column>  
+		        
+		        </p:dataTable>
+       
+			</p:panel>
+			<p:panel header="Anexos">
+			
+				<h:form>
+					<p:dataTable tableStyleClass="layoutAuto" var="item" value="#{bean.arquivos}" emptyMessage="Nenhum arquivo anexo">  
+			       					
+				        <p:column headerText="Arquivo">#{item.nome}</p:column>  
+				        <p:column headerText="Descrição">#{item.descricao}</p:column>  
+				        <p:column headerText="Tamanho (bytes)">#{item.tamanho}</p:column>  
+				        <p:column styleClass="menuBotoes">
+				        	<p:commandButton icon="ui-icon-arrowthick-1-s" title="Download" actionListener="#{bean.download(item)}" ajax="false"/>
+				        </p:column>  
+			        
+			        </p:dataTable>
+		        </h:form>
+       
+			</p:panel>
+		
+		</h:panelGroup>
+		
+	</h:panelGrid>
+			
+</ui:fragment>

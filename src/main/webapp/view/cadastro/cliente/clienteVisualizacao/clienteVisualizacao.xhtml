@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition template="/view/template/padrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:caesb="http://caesb/jsf">
+
+	<ui:define name="titulo">Cliente: #{bean.cliente.nome}</ui:define>
+								
+	<ui:define name="conteudo">	
+		
+		<p:tabView dynamic="true">		
+		
+			<p:tab title="Informações Cadastrais">			
+				<ui:include src="clienteVisualizacaoInfoCadastrais.xhtml" />			
+			</p:tab>			
+			
+			<p:tab title="Dados Associados">
+				<ui:include src="clienteVisualizacaoDadosAssociados.xhtml" />	
+			</p:tab>
+			
+		</p:tabView>
+					
+	</ui:define>	
+		
+</ui:composition>

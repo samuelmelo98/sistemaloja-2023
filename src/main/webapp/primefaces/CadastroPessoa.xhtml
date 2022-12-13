@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+ 	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Página JSF</title>
+	<h:outputStylesheet library="css" name="file.css"></h:outputStylesheet>
+</h:head>
+
+<h:body>
+	<p:panelGrid columns="2">
+		<h:form id="form">
+			<h:outputLabel value="Tabela"></h:outputLabel>
+			<p:panel header="Cadastro Pessoa">
+				<h:panelGrid columns="2">
+					<h:outputText value="ID"></h:outputText>
+					<p:inputText value="#{bean.pessoa.id}" id="nome" size="50"></p:inputText>
+					<h:outputText value="Nome"></h:outputText>
+					<p:inputText value="#{bean.pessoa.nome}" size="50"></p:inputText>
+					<p:commandButton value="Adicionar" action="#{bean.adicionar}"
+						update="tabela"></p:commandButton>
+						<p:commandButton value="Limpar" action="#{bean.limparLista}"
+						update="tabela"></p:commandButton>
+						
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+		
+	</p:panelGrid>
+	<p:dataTable id="tabela" value="#{bean.pessoas}" var="p">
+	<p:column>#{p.id}</p:column>
+	
+	
+	</p:dataTable>
+
+</h:body>
+</html>

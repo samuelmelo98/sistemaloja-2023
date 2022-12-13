@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:fragment
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:caesb="http://caesb/jsf">
+				
+	<p:panel header="Endereço">
+		<caesb:linhaForm label="Logradouro: *" >			
+			<p:inputText value="#{bean.cliente.endereco.logradouro}" required="true"/>								
+		</caesb:linhaForm>
+		
+		<caesb:linhaForm label="CEP: *" >			
+			<p:inputMask value="#{bean.cliente.endereco.cep}" required="true" mask="99.999-999"  />								
+		</caesb:linhaForm>
+	</p:panel>	
+
+</ui:fragment>

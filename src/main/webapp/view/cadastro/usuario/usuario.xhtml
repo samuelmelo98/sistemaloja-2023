@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition template="/view/template/padrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:caesb="http://caesb/jsf">
+
+	<ui:define name="titulo">Usuário</ui:define>
+	
+	<ui:define name="botoes">	
+		<h:form> 
+			<p:commandButton icon="ui-icon-document" value="Cadastrar" actionListener="#{bean.criar}" 
+				update=":form1" oncomplete="PF('dlgEdicao').show()" />	
+		</h:form>
+	</ui:define>
+		
+	<ui:define name="conteudo">								
+										
+		<h:form id="form3">
+			<p:panel header="Filtro de pesquisa:">
+				<h:panelGrid columns="2">
+					
+					<caesb:linhaForm label="Matricula:" labelWidth="10">
+						<p:inputText value="#{bean.filtroId}"/>
+					</caesb:linhaForm>
+					
+				</h:panelGrid>
+						
+				<h:panelGrid columns="2">
+			
+					<caesb:linhaForm label="Nome:" labelWidth="10">			
+						<p:inputText value="#{bean.filtroNome}"/>		
+					</caesb:linhaForm>									
+					
+				</h:panelGrid>
+				
+				<h:panelGrid columns="2">
+					
+					<caesb:linhaForm label="Estado:" labelWidth="10">
+						<p:selectOneMenu value="#{bean.filtroAtivo}">
+							<f:selectItem itemLabel="Selecione..."/>
+							<f:selectItem itemLabel="Sim" itemValue="true"/>
+							<f:selectItem itemLabel="Não" itemValue="false"/>
+						</p:selectOneMenu>
+						
+					</caesb:linhaForm>
+					
+				</h:panelGrid>
+				
+				<caesb:linhaForm labelWidth="10">
+					<p:commandButton icon="ui-icon-search" value="Pesquisar" actionListener="#{bean.requerido()}" />
+				</caesb:linhaForm>
+			</p:panel>
+		</h:form>
+			
+		<h:form id="form2">
+			<p:dataTable tableStyleClass="layoutAuto" var="item" value="#{bean.usuarios}"
+				id="table1" 
+				paginator="true" paginatorPosition="bottom" 
+				rowsPerPageTemplate="10,20,50" rows="10" >
+				
+				<f:facet name="header">
+		            Lista de usuários: #{bean.totalUsuarios()}
+		        </f:facet>
+		        
+		        <p:column>  	           
+		           <p:rowToggler />  
+		        </p:column>  
+		      		  
+		        <p:column headerText="Matrícula">  	           
+		            <h:outputText value="#{bean.formatoMatricula(item.matricula)}"/>  
+		        </p:column>  
+		        
+		        <p:column headerText="Nome">  	           
+		            <h:outputText value="#{item.nome}" />  
+		        </p:column> 
+		        
+		        <p:column headerText="Ativado" sortBy="#{item.ativo}">  	           
+		            <h:outputText value="#{item.ativo == true ? 'Sim' : 'Não'}" />  
+		        </p:column>   
+		        		        		       			
+				<p:column styleClass="menuBotoes">	  
+					<caesb:menuButton>  
+				        <p:menuitem icon="ui-icon-folder-open" value="Visualizar Usuário" actionListener="#{bean.setUsuario(item)}" 
+				        	update=":form4" oncomplete="PF('dlgVisualizacao').show()" />	
+				        <p:menuitem icon="ui-icon-pencil" value="Alterar Usuário" actionListener="#{bean.setUsuario(item)}" 
+				        	update=":form1" oncomplete="PF('dlgEdicao').show()" />	
+				        <p:menuitem icon="ui-icon-trash" value="Remover Usuário" actionListener="#{bean.remover(item)}" 
+				        	update=":form2" onclick="if (!confirm('Deseja remover?')) return false" />	
+				    </caesb:menuButton>	
+				</p:column>
+				
+				<p:rowExpansion>
+		        
+		        	<h:panelGrid columns="2" columnClasses="campo,valor">
+		        	
+		        		<h:outputText value="CPF:" />
+		        		<h:outputText value="#{item.cpf}" converter="#{cpfConverter}" />
+		        		
+		        		<h:outputText value="Matricula:" />
+		        		<h:outputText value="#{item.matricula}" converter="#{matriculaDvConverter}" />
+		        		
+		        		<h:outputText value="Nome" />
+		        		<h:outputText value="#{item.nome}" />
+		        		
+		        		<h:outputText value="Ativado:" />
+		        		<h:outputText value="#{item.ativo == true ? 'Sim' : 'Não'}" />
+		        		
+		        	</h:panelGrid>
+		        
+		        </p:rowExpansion> 	
+		  		  
+		    </p:dataTable> 
+			
+		</h:form>
+		
+	</ui:define>
+	
+	<ui:define name="rodape">
+		<ui:include src="usuarioEdicao.xhtml" />
+		<ui:include src="usuarioVisualizacao.xhtml" />
+	</ui:define>
+		
+</ui:composition>

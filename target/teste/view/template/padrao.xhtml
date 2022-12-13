@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+<f:view contentType="text/html" encoding="ISO-8859-1">
+
+	<h:head>		
+		<title>EXEMPLO <ui:insert name="tituloJanela" /></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />		
+		<meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />	
+		<meta http-equiv="Expires" content="0" />						
+		<ui:decorate template="/view/template/cabecalhos.xhtml"  />
+	</h:head>
+
+	<h:body>		
+		<ui:decorate template="/view/template/mensagens.xhtml"  />
+				
+		<div id="topo1Wrapper">
+		    <div id="topo1">			    	    
+				<div id="logo">
+				
+					<a href="${request.contextPath}/app/home">caesb <span class="sistema">exemplo</span></a>
+										
+					<ui:decorate template="/view/template/faixaDesenvolvimento.xhtml"  />
+					<ui:decorate template="/view/template/faixaHomologacao.xhtml"  />
+				
+				</div> 		
+				
+				<ui:decorate template="/view/template/menuAdministracao.xhtml"  />
+				<ui:decorate template="/view/template/ajaxSpin.xhtml"  />	
+				
+				<div style="clear: both" />			
+			</div>
+		</div>
+		
+		<div id="topo2Wrapper">
+		    <div id="topo2">
+				<ui:include src="menuPrincipal.xhtml" />
+			</div>
+		</div>
+				
+		<div id="topo3Wrapper">
+			<div id="topo3">
+				<div id="menuContexto">
+					<h1>
+						<ui:decorate template="/view/template/breadcrumb.xhtml"  />
+						<ui:insert name="titulo" />
+					</h1>
+					<div class="botoesContexto">
+						<ui:insert name="botoes" />							
+					</div>	
+					<div style="clear: both" />
+				</div>
+			</div>
+		</div>
+		
+		<div id="conteudoWrapper">
+			<div id="conteudo">
+				<ui:insert name="conteudo" />
+			</div>
+		</div>
+	
+		<div id="rodapeWrapper">
+			<div id="rodape">Caesb <h:outputText value="#{timeBean.ano}" /> @ Todos os direitos reservados. #{buildBean.build}</div>
+		</div>
+
+		<ui:insert name="rodape" />
+	</h:body>
+	
+</f:view>
+</html>

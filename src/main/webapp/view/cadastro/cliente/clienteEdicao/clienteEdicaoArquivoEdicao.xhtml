@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:fragment
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:caesb="http://caesb/jsf">
+	
+	<p:dialog appendTo="@(body)" header="Anexo" resizable="false" modal="true" position="center" widgetVar="dlgArquivo">
+		
+		<h:panelGroup id="form2">
+		
+			<h:form id="formAnexo" enctype="multipart/form-data" rendered="#{bean.arquivo.id eq null}">
+				<p:fileUpload fileUploadListener="#{bean.handleFileUpload}" mode="advanced"
+						 label="Procurar"  auto="true"
+						 uploadLabel="Anexar" update=":formConfirmaAnexo" /> 
+			</h:form> 
+					
+			<h:form id="formConfirmaAnexo">
+					
+				<caesb:linhaForm label="Arquivo enviado:" >
+					<h:outputText value="#{bean.file.fileName}" rendered="#{bean.file ne null}"/>
+					<h:outputText value="#{bean.arquivo.nome}" rendered="#{bean.file eq null}" />
+				</caesb:linhaForm>
+				
+				<caesb:linhaForm label="Descrição: *" >			
+					<p:inputText value="#{bean.arquivo.descricao}" required="true" size="20"/>								
+				</caesb:linhaForm>
+				
+				<center>						
+					<p:commandButton icon="ui-icon-disk" value="OK" update=":form2,:form1:panelArquivos" actionListener="#{bean.alterarArquivo}" 
+						rendered="#{bean.arquivo.id != null}" oncomplete="if (args.fechar) PF('dlgArquivo').hide()" />	
+					
+					<p:commandButton icon="ui-icon-disk" value="Anexar" update=":form2,:form1:panelArquivos" actionListener="#{bean.cadastrarArquivo}" 
+						rendered="#{bean.arquivo.id == null}" oncomplete="if (args.fechar) PF('dlgArquivo').hide()" />					
+				</center>
+				
+			</h:form>		
+		
+		</h:panelGroup>
+		
+	</p:dialog>
+					
+</ui:fragment>

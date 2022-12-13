@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition template="/view/template/padrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:caesb="http://caesb/jsf">
+
+	<ui:define name="titulo">Relatório de Usuários</ui:define>	
+	<ui:define name="conteudo">								
+										
+		<h:form id="form1">		
+			<p>Informe os critérios para geração do relatório:</p>
+		
+			<caesb:linhaForm label="Nome:" >			
+				<p:inputText value="#{ruBean.filtroNome}"  />								
+			</caesb:linhaForm>
+			
+			<caesb:linhaForm label="Formato: " >			
+				<p:selectOneRadio value="#{ruBean.formato}">
+					<f:selectItems value="#{ruBean.formatos}" var="item" itemLabel="#{item.id}" />
+				</p:selectOneRadio>					
+			</caesb:linhaForm>
+			
+			<caesb:linhaForm>	
+				<p:commandButton value="Gerar relatório" update=":form1" actionListener="#{ruBean.gerarRelatorio}" 
+					oncomplete="if (args.download) jQuery('.btDownload').click()" />																
+			</caesb:linhaForm>			
+		</h:form>
+				
+		<h:form id="form2" target="_blank">		
+			<p:commandButton styleClass="btDownload" actionListener="#{ruBean.download}" 
+				ajax="false" style="display: none" />	
+		</h:form>
+		
+	</ui:define>
+	
+</ui:composition>

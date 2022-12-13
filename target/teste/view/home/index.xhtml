@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition template="/view/template/padrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:caesb="http://caesb/jsf">
+
+	<ui:define name="conteudo">
+						
+		<ui:param name="exibirDash" value="#{caesb:hasAccess('ADM_DASHBOARD')}" />
+
+		<h:panelGroup layout="block" rendered="#{!exibirDash}"> 
+    		<ui:decorate template="bemvindo.xhtml" />		
+		</h:panelGroup>						
+						
+		<p:tabView dynamic="true" rendered="#{exibirDash}"> 
+    		<p:tab title="Bem-vindo">    		  
+    		  	<ui:decorate template="bemvindo.xhtml" />				
+			</p:tab>
+    		<p:tab title="Sobre">			
+				<p style="text-align=justified">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+				Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+				Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+				Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				</p>
+			</p:tab>
+		</p:tabView>
+		
+	</ui:define>
+
+</ui:composition>

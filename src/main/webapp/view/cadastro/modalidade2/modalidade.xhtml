@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition template="/view/template/padrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:caesb="http://caesb/jsf">
+
+	<ui:define name="titulo">Modalidade</ui:define>
+			
+	<ui:define name="conteudo">	
+			
+		<h:form id="form1">
+						
+			<p:commandButton value="Refresh" actionListener="#{bean.pesquisar}" update=":form1" />	
+						
+			<p:dataTable tableStyleClass="layoutAuto" id="table1" var="item" value="#{bean.modalidades}" 
+				filteredValue="#{bean.modalidadesFiltered}" paginator="true" rows="3">  
+		      		  
+		        <p:column headerText="ID">  	           
+		            <h:outputText value="#{item.id}" />  
+		        </p:column>  
+		        
+		        <p:column headerText="Description" filterBy="#{item.descricao}">  	           
+		            <h:outputText value="#{item.descricao}" />  
+		        </p:column>  
+		       			
+				<p:column style="width: 1%">	  
+					<p:commandButton value="Delete" 
+						actionListener="#{bean.remover(item)}" update=":form1" />	
+				</p:column> 	
+						  		  
+		    </p:dataTable> 
+			
+		</h:form>
+		
+	</ui:define>
+			
+</ui:composition>

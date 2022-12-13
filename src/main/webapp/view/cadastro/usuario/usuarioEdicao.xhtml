@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:fragment
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:caesb="http://caesb/jsf">
+
+		<p:dialog appendTo="@(body)" header="Cadastro de Usuário" resizable="false" modal="true" position="center" widgetVar="dlgEdicao" width="700px">							
+			<h:form id="form1">
+					
+				<caesb:linhaForm label="Matrícula: *" >		
+					<p:inputText value="#{bean.usuario.matricula}" required="true"
+						disabled="#{bean.modoAlteracao}"  />								
+				</caesb:linhaForm>
+				
+				<caesb:linhaForm label="CPF: *" >			
+					<p:inputMask mask="999.999.999-99" value="#{bean.usuario.cpf}" required="true" converter="#{cpfConverter}">
+						<f:validator validatorId="cpfValidator" />	
+					</p:inputMask>							
+				</caesb:linhaForm>
+				
+				<caesb:linhaForm label="Nome: *" >			
+					<p:inputText value="#{bean.usuario.nome}" required="true" size="40" />								
+				</caesb:linhaForm>
+				
+				<caesb:linhaForm label="Ativo:" >	
+					<p:selectBooleanCheckbox value="#{bean.usuario.ativo}" onLabel="Sim" offLabel="Não" /> 								
+				</caesb:linhaForm>
+							
+				<center>						
+					<p:commandButton icon="ui-icon-disk" value="Salvar" update=":form1,:form2" actionListener="#{bean.alterar}" 
+						rendered="#{bean.modoAlteracao}" oncomplete="if (args.fechar) PF('dlgEdicao').hide()" />	
+					
+					<p:commandButton icon="ui-icon-disk" value="Salvar" update=":form1,:form2" actionListener="#{bean.cadastrar}" 
+						rendered="#{bean.modoAlteracao eq false}" oncomplete="if (args.fechar) PF('dlgEdicao').hide()" />					
+				</center>
+						    
+			</h:form>		
+		</p:dialog>
+		
+</ui:fragment>

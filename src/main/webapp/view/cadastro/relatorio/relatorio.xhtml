@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition template="/view/template/padrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:caesb="http://caesb/jsf">
+
+	<ui:define name="titulo">Relatório</ui:define>
+	
+	<ui:define name="botoes">	
+		<h:form> 
+			<p:commandButton icon="ui-icon-document" value="Cadastrar" actionListener="#{bean.criar}" 
+				update=":form1" oncomplete="PF('dlg').show()" />	
+		</h:form>
+	</ui:define>
+		
+	<ui:define name="conteudo">	
+			
+		<h:form id="form2">
+						
+			<p:dataTable tableStyleClass="layoutAuto" var="item" value="#{bean.relatorios}"
+				emptyMessage="Nenhum registro" >  
+		      		  
+		      	<p:column style="width: 1%"><p:rowToggler/></p:column>
+		      		  
+		        <p:column headerText="ID">  	           
+		            <h:outputText value="#{item.id}" />  
+		        </p:column>  
+		        
+		        <p:column headerText="Nome">  	           
+		            <h:outputText value="#{item.nome}" />  
+		        </p:column>  
+		        
+		        <p:column headerText="Descrição">  	           
+		            <h:outputText value="#{item.descricao}" />  
+		        </p:column>  
+		       			
+				<p:column styleClass="menuBotoes">	  
+					<caesb:menuButton>  
+				        <p:menuitem icon="ui-icon-play" value="Executar (CSV)" actionListener="#{bean.gerarCSV(item)}" 
+							oncomplete="if (args.download) jQuery('.btDownload').click()"  />	
+				        <p:menuitem icon="ui-icon-play" value="Executar (Excel)" actionListener="#{bean.gerarXLSX(item)}" 
+							oncomplete="if (args.download) jQuery('.btDownload').click()"  />	
+				        <p:separator />
+				        <p:menuitem icon="ui-icon-pencil" value="Alterar Relatório" actionListener="#{bean.setRelatorio(item)}" 
+				        	update=":form1" oncomplete="PF('dlg').show()" />	
+				        <p:menuitem icon="ui-icon-trash" value="Remover Relatório" actionListener="#{bean.remover(item)}" 
+				        	update=":form2" onclick="if (!confirm('Deseja remover?')) return false" />	
+				    </caesb:menuButton>	
+				</p:column>
+				
+				<p:rowExpansion>
+					<h:outputText value="#{item.sql}" />  
+				</p:rowExpansion> 	
+						  		  
+		    </p:dataTable> 
+			
+		</h:form>
+		
+		<h:form id="form3">		
+			<p:commandButton styleClass="btDownload" actionListener="#{bean.download}" 
+				ajax="false" style="display: none" />	
+		</h:form>
+		
+	</ui:define>
+	
+	<ui:define name="rodape">
+		<ui:include src="relatorioEdicao.xhtml" />
+	</ui:define>
+		
+</ui:composition>

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition template="/view/template/padrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:caesb="http://caesb/jsf">
+
+	<ui:define name="titulo"></ui:define>
+	
+	<ui:define name="botoes">	
+	</ui:define>
+		
+	<ui:define name="conteudo">	
+					
+		<style>
+			.superbuscaItem {margin: 2px 0px 18px 0px; padding: 4px}
+			.superbuscaItem.expanded {background-color: #E8EEF1}
+			.superbuscaItemTitle { text-decoration: none; font-size: 17px}
+			.superbuscaItemTitle:hover {font-style: bold; text-decoration: underline;}
+			.hidden {display: none}
+			#formLista .ui-datalist-content.ui-widget-content {border-left: none; border-right: none}
+		</style>
+			
+		<script>
+			function showMaisInformacoes(targetId) {				
+				var ctn = jQuery('[id$="maisInformacoes"]').html();
+				var targetDiv = jQuery('[id$="superbuscaItemDetail_'+ targetId+'"]');
+				var parentDiv = targetDiv.parent();
+				var button = jQuery('[class$="btnMaisInformacoes_'+ targetId+'"]');
+				
+				parentDiv.addClass("expanded");
+				targetDiv.html(ctn).fadeIn(500);
+				button.prev().hide();
+				button.hide();
+			}
+		</script>
+		
+		<h:form id="formFiltro">				
+				<center>		
+					<img src="${request.contextPath}/app/javax.faces.resource/base/image/superbusca.png?v=2" style="height: 50px; padding: 15px 0" />		
+					<h:panelGrid columns="3" style="margin-bottom: 15px">
+						<p:inputText id="filtroPes" value="#{bean.filtro.expressao}" size="60" onkeydown="hideHelpQtip()" onblur="hideHelpQtip()" style="margin-left: 40px"/>		
+						<p:commandButton icon="ui-icon-search" update=":formLista" actionListener="#{bean.pesquisar}" />	
+						<p:commandLink id="btVantagens" value="(Conheça)" onclick="return false" style="text-decoration: none;"/>
+					</h:panelGrid>					
+				</center>	
+				<p:watermark value="Pesquisar Clientes" for="formFiltro:filtroPes" />											
+		</h:form>	
+		
+		<!-- REMOVER ESTE BLOCO -->
+		
+		<div style="background-color: #eee; margin: 1em 0 2em 0; padding: 5px">
+		<center>
+			Neste exemplo indexamos a entidade <b>Cliente</b> (campos Nome e Cpf) e sua associativa <b>Endereço</b>.
+		</center>
+		</div>
+
+		<h:form id="formLista" style="margin-bottom: 3em">
+			
+			<h:panelGroup rendered="#{bean.visualizarLista}">
+						
+				<p style="font-style: italic; margin: 4px">
+				   Encontrados <h:outputText value="#{bean.totalItens}" ><f:convertNumber pattern="#,##0" /></h:outputText> 
+				   resultado(s) em <h:outputText value="#{bean.tempoPesquisaSeg}"><f:convertNumber pattern="#,##0.00" /></h:outputText>
+				   segundos.
+				</p>
+				
+				<!-- TODO migrar para DATASCROLLER -->
+				
+				<p:dataList id="superbuscaList" value="#{bean.dataModel}" var="item" type="definition" itemType="none" 
+					paginator="true" paginatorPosition="bottom" 
+					rows="20" rowsPerPageTemplate="10,20,50,100" styleClass="paginated"
+					emptyMessage="Nenhum registro encontrado" >
+	
+					<div class="superbuscaItem">
+										
+						<a href="cadastro/cliente/clienteVisualizacao?id=#{item.id}" class="superbuscaItemTitle">#{item.nome}</a>
+						
+						<span> - </span> 
+						
+						<p:commandLink styleClass="btnbtnMaisInformacoes_#{item.id}" update=":maisInformacoes" oncomplete="showMaisInformacoes('#{item.id}')">
+               				<f:setPropertyActionListener value="#{item}" target="#{bean.selectedCliente}" />
+                   			<h:outputText value="Mais Informações" />
+          				</p:commandLink>
+            						
+						<div class="superbuscaItemDetail">
+							<h:panelGroup rendered="#{item.nome.length() gt 0}">
+								Nome: <h:outputText value="#{item.nome}" /><br />
+							</h:panelGroup>
+							<h:panelGroup rendered="#{item.cpf.length() gt 0}">
+								CPF: <h:outputText value="#{item.cpf}" converter="#{cpfConverter}"/><br />
+							</h:panelGroup>	
+						</div>	 
+						
+						<div id="superbuscaItemDetail_#{item.id}" class="hidden"></div>
+					
+					</div>
+							
+				</p:dataList>				
+			</h:panelGroup>
+		</h:form>
+
+	</ui:define>
+
+	<ui:define name="rodape">
+				
+		<div class="hidden">
+			<h:panelGroup id="maisInformacoes"  layout="block">
+			    <p:dataTable tableStyleClass="layoutAuto" var="item2" value="#{bean.maisInformacoes}" emptyMessage="Nenhum registro encontrado" >
+							           		            
+		            <p:column headerText="Tipo">
+		                <h:outputText value="#{item2.tipoTelefone.descricao}" />
+		            </p:column>
+		            
+		            <p:column headerText="Telefones">
+		                <h:outputText value="(#{item2.ddd}) #{item2.numero}" />
+		            </p:column>
+				       
+		        </p:dataTable>
+		    </h:panelGroup>
+		</div>	    
+	    
+	    <ui:include src="superbuscaPopupVantagens.xhtml" />
+				
+		<script>		
+			jQuery(function () {
+				setHelpQtip();
+			})		
+			
+			function setHelpQtip() {
+				jQuery('[id$="filtroPes"]').qtip({ 
+				    content: {
+				    	title: 'Dica',
+				        text: 'Para maior precisão, use "+" entre os termos. Exemplo: SOUSA + GUARA'
+				    },
+				    position: {
+				        my: 'top left',  // Position my top left...
+				        at: 'bottom left' // at the bottom right of...
+				    },
+				    show: {
+				        delay: 300
+				    },
+				    style: {
+				        tip: {
+				            corner: true
+				        },
+				        classes: 'qtip-blue qtip-shadow'
+				    },
+				    hide: {
+				        delay: 1000,
+				        effect: function(offset) {
+				            $(this).fadeOut(400); // "this" refers to the tooltip
+				        }
+				    }
+				});
+			}
+			
+			function hideHelpQtip() {
+				jQuery('[id$="filtroPes"]').qtip('api').hide();
+			}
+
+		</script>
+		
+	</ui:define>
+		
+</ui:composition>

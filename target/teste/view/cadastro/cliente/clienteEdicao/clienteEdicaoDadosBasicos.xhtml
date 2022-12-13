@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:fragment
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:caesb="http://caesb/jsf">
+				
+	<p:panel header="Dados Básicos">
+		<caesb:linhaForm label="Nome: *" id="nome">			
+			<p:inputText value="#{bean.cliente.nome}" required="true" size="20">
+				<p:ajax event="blur" update=":form1:nome" />
+			</p:inputText> (validação <tt>blur</tt>)								
+		</caesb:linhaForm>
+		
+		<caesb:linhaForm label="CPF: *" >			
+			<p:inputMask value="#{bean.cliente.cpf}" required="true" mask="999.999.999-99"
+				converter="#{cpfConverter}" validator="cpfValidator" size="12" />								
+		</caesb:linhaForm>
+		
+		<caesb:linhaForm label="Email: *" >			
+			<p:inputText value="#{bean.cliente.email}" validator="emailValidator" size="30"/>								
+		</caesb:linhaForm>
+						
+		<caesb:linhaForm label="Estado Civil: *" >			
+			<p:selectOneMenu value="#{bean.cliente.estadoCivil}" effectDuration="1">  
+                <f:selectItem itemLabel="Selecione..." />  
+                <f:selectItems value="#{bean.estadosCivis}" var="item" itemLabel="#{item.descricao}"  />  
+            </p:selectOneMenu>  							
+		</caesb:linhaForm>
+						
+		<caesb:linhaForm label="Data de Nascimento: *" >			
+			<p:calendar value="#{bean.cliente.dataNascimento}" navigator="true" required="true"
+					showOn="button" pattern="dd/MM/yyyy" locale="pt"
+					showButtonPanel="true" readOnlyInputText="true">
+			</p:calendar>						
+		</caesb:linhaForm>
+		
+		<caesb:linhaForm label="Ativo: *" >			
+			<p:selectOneRadio value="#{bean.cliente.ativo}" required="true">
+	            <f:selectItem itemLabel="Sim" itemValue="true" />  
+	            <f:selectItem itemLabel="Não" itemValue="false" /> 
+			</p:selectOneRadio>							
+		</caesb:linhaForm>
+	</p:panel>	
+
+</ui:fragment>

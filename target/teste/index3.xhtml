@@ -1,0 +1,73 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+
+<h:body>
+	<h:form id="formFiltros">
+	<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
+		<p:fieldset legend="Filtro de Pesquisa" id="panelFiltros"
+			toggleable="true" toggleSpeed="500">
+			<p:ajax event="toggle" listener="#{testeBean.mostrar}" update="msgs"></p:ajax>
+
+			<p:focus context="idGridPesquisaObra" />
+
+			<h:panelGrid columns="2" id="idGridPesquisaObra">
+
+				
+				
+	
+
+
+					<p:commandButton id="idBotaoPesquisaGestorContrato"
+						icon="ui-icon-search"
+						>
+					</p:commandButton>
+
+		
+
+
+					<p:commandButton id="idBotaoPesquisaFiscalObra"
+						icon="ui-icon-search"
+						>
+					</p:commandButton>
+
+		
+
+			</h:panelGrid>
+
+				<p:inputText style="width:220px;" id="estacaoNome" size="50"
+					maxlength="40" >
+				</p:inputText>
+
+
+			<center>
+				<p:commandButton value="Limpar">
+					<p:resetInput target=":formFiltros" />
+				</p:commandButton>
+				<p:commandButton value="Pesquisar" id="btnPesquisar"
+					 />
+			</center>
+
+		</p:fieldset>
+		<p:defaultCommand target="btnPesquisar" />
+	</h:form>
+
+	<div class="card">
+		<p:dataTable var="loop" value="#{bean.pessoas}" id="tabela">
+			<p:column headerText="ID">
+				<h:outputText value="#{loop.id}" />
+			</p:column>
+			<p:column headerText="Nome">
+				<h:outputText value="#{loop.nome}" />
+			</p:column>
+		</p:dataTable>
+
+	</div>
+
+
+</h:body>
+</html>

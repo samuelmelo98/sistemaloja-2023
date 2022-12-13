@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title style="center">SelectMenu</title>
+</h:head>
+
+<h:body>
+	<h1>Exemplo select Menu</h1>
+	<p:separator></p:separator>
+	<h:form id="form">
+		<p:panelGrid>
+			<h:outputText value="Adiciona item"></h:outputText>
+			<br />
+			<h:outputLabel value="ID" for="id"></h:outputLabel>
+			<br />
+			<p:inputText id="id" value="#{selectItemsBean.selectitems.id}"
+				size="50"></p:inputText>
+			<br />
+			<h:outputLabel value="nome" for="nome"></h:outputLabel>
+			<br />
+			<p:inputText id="nome" value="#{selectItemsBean.selectitems.nome}"
+				size="50"></p:inputText>
+			<br />
+			<p:commandButton value="AdicionarItem"
+				action="#{selectItemsBean.adicionarItem}" update="form"></p:commandButton>
+			<p:separator></p:separator>
+		</p:panelGrid>
+	</h:form>
+</h:body>
+</html>

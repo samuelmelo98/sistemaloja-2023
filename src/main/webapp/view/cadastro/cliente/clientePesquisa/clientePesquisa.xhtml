@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition template="/view/template/padrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:caesb="http://caesb/jsf">
+
+	<ui:define name="titulo">Pesquisa de Cliente</ui:define>
+			
+	<ui:define name="botoes">
+		<h:form>
+			<p:button icon="ui-icon-document" value="Cadastrar" href="clienteEdicao" />  
+		</h:form>
+	</ui:define>
+					
+	<ui:define name="conteudo">	
+		
+		<style>		
+			.ui-linha-form th { width: 150px }
+		</style>
+		
+		<h:form id="form3">
+		
+			<p:panel header="Filtro de Pesquisa"
+				rendered="#{bean.totalItens eq 0}">
+			
+				<h:panelGrid columns="2" columnClasses="c2,c2">
+				
+						<caesb:linhaForm label="Nome:" >
+						 	<p:inputText value="#{bean.filtro.nome}" />
+						</caesb:linhaForm>
+						
+						<caesb:linhaForm label="Email:" >
+						 	<p:inputText value="#{bean.filtro.email}" />
+						</caesb:linhaForm>
+									
+						<caesb:linhaForm label="CPF:" >
+						 	<p:inputMask mask="999.999.999-99" value="#{bean.filtro.cpf}"
+									 converter="#{cpfConverter}" >
+								<f:validator validatorId="cpfValidator" />	
+							</p:inputMask>	
+						</caesb:linhaForm>
+								
+						<caesb:linhaForm label="Logradouro:" >
+						 	<p:inputText value="#{bean.filtro.logradouro}" />
+						</caesb:linhaForm>
+						
+						<caesb:linhaForm label="Estado Civil:" >			
+							<p:selectOneMenu value="#{bean.filtro.estadoCivil}">  
+		                        <f:selectItem itemLabel="Selecione..." />  
+		                        <f:selectItems value="#{bean.estadosCivis}" var="item" itemLabel="#{item.descricao}"  />  
+		                    </p:selectOneMenu>  							
+						</caesb:linhaForm>
+						
+				</h:panelGrid>
+					
+				<center>	
+					<p:commandButton icon="ui-icon-search" value="Pesquisar" actionListener="#{bean.pesquisar(true)}" 
+						update=":form2,:form3" />
+				</center>
+				
+			</p:panel>
+			
+		</h:form>
+		
+		<h:form id="form2">
+						
+			<p:commandButton value="Alterar critérios de pesquisa" 
+				actionListener="#{bean.setTotalItens(0)}" update=":form2,:form3"
+				rendered="#{bean.totalItens gt 0}" />
+			
+			<p:dataTable tableStyleClass="layoutAuto" var="item" value="#{bean.dataModel}" id="table1"
+				paginator="true" paginatorPosition="bottom"
+				rows="10" rowsPerPageTemplate="10,20,50"
+				emptyMessage="Nenhum registro encontrado"
+				rendered="#{bean.totalItens gt 0}" >  
+		       					
+		        <p:column>  	           
+		           <p:rowToggler />  
+		        </p:column>  
+		        		        
+		        <p:column headerText="Nome" filterMatchMode="contains" sortBy="#{item.nome}">  	           
+		            <h:outputText value="#{item.nome}" />  
+		        </p:column>  
+		        
+		        <p:column headerText="CPF" >  	           
+		            <h:outputText value="#{item.cpf}" converter="#{cpfConverter}" />  
+		        </p:column>  
+		        
+		        <p:column headerText="Endereço" >  	           
+		            <h:outputText value="#{item.endereco.logradouro}"  />  
+		        </p:column>  
+		        		        		        		        
+		        <p:column headerText="Ativo" >  	           
+		            <h:outputText value="#{item.ativo eq true ? 'Sim' : 'Não'}" />  
+		        </p:column>  
+		        						        				
+				<p:column styleClass="menuBotoes">	  
+					
+					<p:button icon="ui-icon-search" href="clienteVisualizacao?id=#{item.id}"/>
+					
+					<caesb:menuButton>			
+						<p:menuitem icon="ui-icon-search" value="Visualizar Cliente" 
+						oncomplete="PF('dlgVisualizacaoCliente').show()" update="form4" actionListener="#{bean.salvar(item)}"/>
+						
+						<p:menuitem icon="ui-icon-pencil" value="Alterar Cliente" url="clienteEdicao?id=#{item.id}" />
+							
+						<p:menuitem icon="ui-icon-trash" value="Remover Cliente" actionListener="#{bean.remover(item)}" 
+							update=":form2" onclick="if (!confirm('Deseja remover?')) return false" />
+					</caesb:menuButton>
+				    
+				</p:column> 
+					  
+		        <p:rowExpansion>
+		        
+		        	<h:panelGrid columns="2" columnClasses="campo,valor">
+		        	
+		        		<h:outputText value="Estado Civil:" />
+		        		<h:outputText value="#{item.estadoCivil.descricao}" />
+		        	
+		        		<h:outputText value="Data de Nascimento:" />
+		        		<h:outputText value="#{item.dataNascimento}">
+			            	<f:convertDateTime pattern="dd/MM/yyyy" />
+			            </h:outputText> 
+		        		
+		        		<h:outputText value="CEP:" />
+		        		<h:outputText value="#{item.endereco.cep}" />
+		        		
+		        		<h:outputText value="Telefones:" />
+		        		<h:outputText value="#{item.telefonesFmt}" />
+		        		
+		        	</h:panelGrid>
+		        
+		        </p:rowExpansion>
+		        
+		    </p:dataTable> 
+				
+		</h:form>
+		
+		<h:form id="form4">
+			<p:dialog appendTo="@(body)" header="Cliente" resizable="false" modal="true" position="center" widgetVar="dlgVisualizacaoCliente">	
+		    	
+		    	<h:panelGrid columns="2" columnClasses="c2,c2" width="100%">
+			    	<h:panelGroup>	
+			    						
+						<p:panel header="Dados básicos">
+						
+							<h:panelGrid columns="2" columnClasses="campo,valor">
+								<h:outputText value="Nome:" />
+				        		<h:outputText value="#{bean.clienteTemp.nome}" />
+				        		
+				        		<h:outputText value="CPF:" />
+				        		<h:outputText value="#{bean.clienteTemp.cpf}" converter="#{cpfConverter}"/>
+				        		
+				        		<h:outputText value="E-mail:" />
+				        		<h:outputText value="#{bean.clienteTemp.email}" />
+				        		
+				        		<h:outputText value="Data de Nascimento:" />
+				        		<h:outputText value="#{bean.clienteTemp.dataNascimento}">
+					            	<f:convertDateTime pattern="dd/MM/yyyy" />
+					            </h:outputText> 
+				        		
+				        		<h:outputText value="Estado civil:" />
+				        		<h:outputText value="#{bean.getEstadoCivil()}" />
+		
+				        		<h:outputText value="Telefones:" />
+				        		<h:outputText value="#{bean.clienteTemp.getTelefonesFmt()}" />
+				        		
+				        		<h:outputText value="Ativado?" />
+				        		<h:outputText value="#{bean.clienteTemp.ativo == true ? 'Sim' : 'Não'}" />
+							</h:panelGrid>
+							
+						</p:panel>
+						<p:panel header="Endereço">
+							<h:panelGrid columns="2" columnClasses="campo,valor">
+				        		<h:outputText value="Logradouro:" />
+				        		<h:outputText value="#{bean.getLogradouro()}" />
+				        		
+				        		<h:outputText value="CEP:" />
+				        		<h:outputText value="#{bean.getCEP()}" />
+							</h:panelGrid>
+						</p:panel>
+							
+					</h:panelGroup>
+					<h:panelGroup>
+			
+						<p:panel header="Contatos">
+				
+							<p:dataTable tableStyleClass="layoutAuto" var="item" value="#{caesb:asList(bean.getContatos())}" emptyMessage="Nenhum contato">  
+			       					
+				        		<p:column headerText="Nome">#{item.nome}</p:column>  
+				        		<p:column headerText="Telefone">#{item.telefone}</p:column>  
+			        
+			        		</p:dataTable>
+	       
+						</p:panel>
+						<p:panel header="Anexos">
+				
+							<h:form>
+								<p:dataTable tableStyleClass="layoutAuto" var="item" value="#{bean.arquivos}" emptyMessage="Nenhum arquivo anexo">  
+				       					
+							        <p:column headerText="Arquivo">#{item.nome}</p:column>  
+							        <p:column headerText="Descrição">#{item.descricao}</p:column>  
+							        <p:column headerText="Tamanho (bytes)">#{item.tamanho}</p:column>  
+							        <p:column styleClass="menuBotoes">
+							        	<p:commandButton icon="ui-icon-arrowthick-1-s" title="Download" actionListener="#{bean.download(item)}" ajax="false"/>
+							        </p:column>  
+						        
+						        </p:dataTable>
+					        </h:form>
+			       
+						</p:panel>
+					
+					</h:panelGroup>
+				</h:panelGrid>	
+			</p:dialog>  
+		</h:form>
+			
+	</ui:define>	
+			
+</ui:composition>

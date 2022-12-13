@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition template="/view/template/padrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:caesb="http://caesb/jsf">
+
+	<ui:define name="titulo">Georreferenciamento (Integração ArcGis)</ui:define>
+	
+	<ui:define name="botoes">	
+	</ui:define>
+		
+	<ui:define name="conteudo">	
+			
+		<!-- GIS (esses imports nao podem ficar dentro das abas do PrimeFaces) -->
+		<link rel="stylesheet" href="https://sistemas.caesb.df.gov.br/arcgis/3.11/3.11/esri/css/esri.css" />
+		<link rel="stylesheet" href="https://sistemas.caesb.df.gov.br/arcgis/3.11/3.11/dijit/themes/tundra/tundra.css" />
+		<script src="https://sistemas.caesb.df.gov.br/arcgis/3.11/3.11/init.js?v=1"></script>
+				
+		<table>
+		<tr> 
+			<td>
+					<div id="mapGisBotoes" style="height: 30px; display: none">
+					Camadas: <input type="checkbox" id="checkboxLayer0" />Terra (Ortofoto)
+							 <input type="checkbox" id="checkboxLayer1" checked="checked" />Mapa Caesb
+							 <input type="button" id="buttonCentralizar" style="margin-left: 2em" value="Centralizar" />
+					</div>
+					<div id="mapGisDiv" style="width: 700px; height: 380px;"><!-- vide height e width na linha 'mapGis = new Map' abaixo --></div>
+			</td>
+			<td>
+					<div id="legendDiv" style="width: 250px; height: 410px; overflow-y: scroll"><!--  --></div>
+			</td>
+		</tr>
+		</table>
+
+		<script>
+		
+				// O mapa eh composto por várias camadas (layers). 
+				// Essas camadas sao obtidas a partir de servicos WebService do ArcGis. Cada servico pode oferecer uma ou mais camadas. 
+				// Utilizamos no mapa os servicos abaixo listados. As camadas de todos eles sao somadas (sobrepostas) no mapa apresentado em tela.
+				//
+				// 		TILED_ORTOFOTO    - Oferece uma camada (layer 0) referente as imagens de satelite (chamadas de "ortofoto"). Eh um servico do tipo "Tiled" (imagens bitmap quadradas).
+				// 		TILED_REDE_CAESB  - Oferece 20 camadas (layer 0 a 19) referentes a rede da caesb. Eh um servico do tipo "Tiled" e utilizado tambem para montagem da legenda.
+				//      FEATURE_IMOVEIS   - Oferece uma camada (layer 0) referente as inscricoes (lotes). Eh um servico que suporta os tipos "Dynamic" e "Feature".
+				//                          Ao acessar no modo Dynamic, o servico eh utilizado para plotagem dos pontos relativos aos imoveis. Os dados sao obtidos em tempo real.
+				//                          Ao acessar no modo Feature, o servico eh utilizado para tratar eventos do mouse (ex: obter inscricao com base nas coordenadas do clique).  
+	
+				// URL dos servicos
+    	    	var URL_TILED_ORTOFOTO      = "https://atlas.caesb.df.gov.br/arcgis/rest/services/DISTRITO_FEDERAL/ORTOFOTO_2015/MapServer";
+	    		var URL_TILED_REDE_CAESB    = "https://atlas.caesb.df.gov.br/arcgis/rest/services/INTEGRACAO_GCOM/MapaBaseGCOM/MapServer";
+		    	var URL_FEATURE_IMOVEIS 	= "https://atlas.caesb.df.gov.br/arcgis/rest/services/INTEGRACAO_GCOM/Clientes/MapServer";
+
+				// Numero da camada (layer) referente as inscricoes (lotes) dentro do servico FEATURE_IMOVEIS
+		    	var URL_FEATURE_IMOVEIS_NUM_LAYER  = 0;
+				
+				// Centro do mapa e zoom com base nos dados do GCOM
+		    	var LONGITUDE_INICIAL	  = -48.0109500;
+				var LATITUDE_INICIAL      = -15.8347983;
+				var INSCRICAO_INICIAL     = "7037131"; 
+					
+				// Instancia dos componentes do ArcGis
+				var mapGis; 						 
+				var serviceTiledOrtofoto; 	    // servico da camada de ortofoto
+				var serviceTiledRedeCaesb; 	    // servico das camadas de rede da caesb
+				var serviceFeatureImoveis_dyn;  // servico da camada de imoveis
+				var serviceFeatureImoveis_feat;	// servico para tratamento de eventos (servico contido no serviceFeatureImoveis_dyn)
+
+			    // Componente de legenda						
+				var legendDijit;	
+
+				// Utilitario da API do ArcGis.
+				var arrayUtilsExt;
+				
+				function debugGis() {
+					var scales = [];
+					var tileInfo = serviceTiledRedeCaesb.tileInfo;
+					arrayUtilsExt.forEach(tileInfo.lods, function(lod) {
+						var level = lod.level;
+						var scale = lod.scale;
+						var resolution = lod.resolution;
+						scales.push("level: " + level + " scale: " + scale + " resolution: " + resolution + "\n");
+					});
+					alert(scales); 
+				}
+					
+				require([
+					"esri/map", 
+					
+					// Requisitos para Tiled map - https://developers.arcgis.com/javascript/jssamples/layers_ags_tiled.html
+					"esri/layers/ArcGISTiledMapServiceLayer",
+					
+					// Requisitos para Dynamic map - https://developers.arcgis.com/javascript/jssamples/map_dynamic.html
+			        "esri/layers/ImageParameters",
+				    "esri/layers/ArcGISDynamicMapServiceLayer",
+				    
+				    // Requisitos para Feature layer - https://developers.arcgis.com/javascript/jssamples/exp_history.html
+				    "esri/layers/FeatureLayer",
+				    
+			        // Support API
+			        "esri/symbols/SimpleFillSymbol", 
+			        "esri/symbols/SimpleLineSymbol",
+			        "esri/Color", 
+			        "esri/tasks/query",
+			        "esri/graphicsUtils",
+			        
+			        // Dijit components
+			        "esri/dijit/Popup", 
+			        "esri/dijit/PopupTemplate",
+			        "esri/dijit/Legend",
+
+			        // Dojo
+					"dojo/parser",
+					"dojo/_base/array", 
+			        "dojo/dom-construct",
+			        "dojo/dom",
+			        "dojo/on",
+			        "dojo/query",
+					"dojo/domReady!"
+				],  function(Map, ArcGISTiledMapServiceLayer, ImageParameters, ArcGISDynamicMapServiceLayer, FeatureLayer, SimpleFillSymbol, 
+						SimpleLineSymbol, Color, Query, graphicsUtils, Popup, PopupTemplate, Legend, parser, arrayUtils, 
+						domConstruct, dom, on, query) { 
+						
+					arrayUtilsExt = arrayUtils;
+										
+					// ocorre quando o usuario troca de aba e retorna para o GIS
+			        if (typeof mapGis !== 'undefined')
+			        {
+			        	legendDijit.destroy();
+			        }
+					
+					// converte tags decoradas para Dijits, Widgets e outros Objects
+		         	parser.parse();
+
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+					// define tamanho padrao do Mapa (somente no DIV não funciona)
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+					
+					esri.config.defaults.map.width = 700;
+					esri.config.defaults.map.height = 380;
+					
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+					// define componentes básicos
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+					
+				    var sls = new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([111, 0, 255]), 3);
+				    var sfs = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, sls,new Color([111, 0, 255, 0.15]));
+
+					var popup = new Popup({
+			          	fillSymbol: sfs
+			        }, domConstruct.create("div"));
+	
+					var popupTemplate = new PopupTemplate({
+						title: "{INSCRICAO_DV}",
+						fieldInfos: [{
+							fieldName: "ENDERECO",
+							label: "Endereço:",
+							visible: true
+	  					}, {
+							fieldName: "SETOR",
+							label: "Setor:",
+							visible: true
+						}]
+					});
+			        					
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+					// Corrije o centro do mapa e zoom
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+					
+					var lon = LONGITUDE_INICIAL;
+					var lat = LATITUDE_INICIAL;
+					var zoomLevel = 6; // corresponde ao zoomScale=8000
+					var zoomScale = 8000;
+					
+					if (lat == 0 || lon == 0)
+					{
+						lon = -47.887667;
+						let = -15.791412;
+						zoomLevel: 0;
+					}
+				
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+					// cria componente de mapa
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+								        
+					mapGis = new Map("mapGisDiv", {
+						center: [lon, lat],
+						zoom: zoomLevel,
+				        infoWindow: popup
+				    	// ,basemap: "topo" // "streets", "satellite", "hybrid", "topo", "gray", "oceans", "osm", "national-geographic"
+					});	
+				          
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+					// define função que marca a inscrição carregada no bean
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+					
+					function selectInscricaoInicial(evt, inscricao) {			
+											
+						if (inscricao) {
+				        	var query = new Query();
+				            query.where = "INSCRICAO_DV = '" +inscricao+ "'";
+				            var deferred = serviceFeatureImoveis_feat.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
+				            	if (selection.length > 0) {
+				            		var center = graphicsUtils.graphicsExtent(selection).getCenter();
+					            	
+									//var extHandler = mapGis.on("extent-change", function () {
+					                //	extHandler.remove();
+					                	// exibe o popup
+					                	mapGis.infoWindow.setFeatures(selection);
+					                	mapGis.infoWindow.show(center);
+					              	//});
+					            	mapGis.centerAt(center);			            		
+				            	}			            	
+							});
+						}
+					}
+
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+					// define função para o evento de clique na inscrição
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+					
+					function pointToExtent(map, point, toleranceInPixel) {
+
+			        	var pixelWidth = map.extent.getWidth() / map.width;	
+			        	var toleraceInMapCoords = toleranceInPixel * pixelWidth;
+	
+			        	//calculate and return computed extent
+			        	return new esri.geometry.Extent( point.x - toleraceInMapCoords,
+				        	point.y - toleraceInMapCoords,
+				        	point.x + toleraceInMapCoords,
+				        	point.y + toleraceInMapCoords,
+				        	map.spatialReference 
+				        );
+			        }
+					
+					function selectInscricaoOnClick(evt) {
+						var query = new Query();
+						query.geometry = pointToExtent(mapGis, evt.mapPoint, 10); 
+						var deferred = serviceFeatureImoveis_feat.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
+				            if (selection.length > 0) {
+								var inscricao = selection[0].attributes["INSCRICAO_DV"];	
+				            }
+						});
+						mapGis.infoWindow.setFeatures([deferred]);
+						mapGis.infoWindow.show(evt.mapPoint);
+					}
+					
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+					// registra os eventos no mapa
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+					
+					var mapLayerAddResult = mapGis.on("layer-add-result", function (evt) {		
+						selectInscricaoInicial(evt, INSCRICAO_INICIAL);
+						
+						// habilita os botoes depois que o mapa estiver carregado
+						query("#mapGisBotoes").style("display", null);	
+
+						// cancela o evento "layer-add-result" para evitar que o mapa fique movendo "sozinho" a cada vez 
+						// que os checkboxes de camadas base (ortofoto e rede caesb) sejam alterados pelo usuario
+						mapLayerAddResult.remove();
+				    });
+
+			        mapGis.on("click", function (evt) {
+			        	selectInscricaoOnClick(evt);
+			        });
+			        
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+					// adiciona as camadas de mapa base (Tiled Service)
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+								
+          			serviceTiledOrtofoto = new ArcGISTiledMapServiceLayer(URL_TILED_ORTOFOTO, { "opacity": 1 }); // por padrao nao eh visivel. A ser habilitado pelo checkbox.
+          			serviceTiledRedeCaesb = new ArcGISTiledMapServiceLayer(URL_TILED_REDE_CAESB, { "opacity": 1 });
+			        mapGis.addLayer(serviceTiledRedeCaesb);	
+			        
+			        // debug
+			        mapGis.on("load", function(evt) {			        	  
+			            // debugGis();  RETIRAR COMENTARIO PARA DEPURAR
+			        });
+								        
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+					// adiciona a camada de imoveis (Dynamic Service)
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+					
+					var imageParameters = new ImageParameters();
+			      	// imageParameters.format = "jpeg"; // set the image type to PNG24, note default is PNG8.		        
+					var serviceFeatureImoveis_dyn = new ArcGISDynamicMapServiceLayer(URL_FEATURE_IMOVEIS, {
+				          "opacity" : 0.9,
+				          "imageParameters" : imageParameters,
+				          "minScale": zoomScale
+				        });
+						
+			        // serviceFeatureImoveis_dyn.setVisibleLayers([URL_FEATURE_IMOVEIS_NUM_LAYER]);
+			        mapGis.addLayer(serviceFeatureImoveis_dyn);
+
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+					// cria a camada de Feature para tratar eventos de seleção de inscrição
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+								
+					var urlFeatureLayerImoveis = URL_FEATURE_IMOVEIS + "/" + URL_FEATURE_IMOVEIS_NUM_LAYER;
+					
+					// a variavel abaixo eh usada nas funcoes acima
+					serviceFeatureImoveis_feat = new FeatureLayer(urlFeatureLayerImoveis, { mode: FeatureLayer.MODE_SELECTION, outFields: ["*"], infoTemplate: popupTemplate });
+					serviceFeatureImoveis_feat.setSelectionSymbol(sfs);	
+			        				    				        
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+					// cria componente de legenda dinâmica
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+								        
+			        var legendLayers = [];
+			        legendLayers.push({ layer: serviceTiledRedeCaesb, title: 'LEGENDA' });
+
+			        legendDijit = new Legend({
+		            	map: mapGis,
+		                layerInfos: legendLayers
+		          	}, "legendDiv");
+					
+		          	legendDijit.startup();
+			        
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+					// eventos dos checkboxes de camadas e botao de centralizacao
+					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+								        
+					function updateLayerVisibility() {
+						mapGis.removeAllLayers();
+						
+						var input0 = query("#checkboxLayer0")[0];
+						var input1 = query("#checkboxLayer1")[0];
+						
+						if (input0.checked)
+							mapGis.addLayer(serviceTiledOrtofoto);
+
+						if (input1.checked)
+						{
+							mapGis.addLayer(serviceTiledRedeCaesb);
+							query("#legendDiv").style("display", null);
+						}
+						else
+						{
+							query("#legendDiv").style("display", "none");						
+						}
+						
+						mapGis.addLayer(serviceFeatureImoveis_dyn);
+					}
+										
+		            on(dom.byId("checkboxLayer0"), "change", updateLayerVisibility);
+		            on(dom.byId("checkboxLayer1"), "change", updateLayerVisibility);
+					
+		            on(dom.byId("buttonCentralizar"), "click", function () { selectInscricaoInicial(null, INSCRICAO_INICIAL); } );
+		          	
+			 	});
+		 	</script>
+		
+	</ui:define>
+	
+	<ui:define name="rodape">
+	</ui:define>
+		
+</ui:composition>

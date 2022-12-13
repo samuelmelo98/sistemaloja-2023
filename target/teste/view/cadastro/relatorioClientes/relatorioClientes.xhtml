@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition template="/view/template/padrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:caesb="http://caesb/jsf">
+
+	<ui:define name="titulo">Relatório de Clientes</ui:define>	
+	<ui:define name="conteudo">								
+										
+		<h:form id="form1">		
+			<p>Preencha o filtro e clique no botão abaixo para gerar o relatório (PDF):</p>
+										
+			<caesb:linhaForm label="Estado Civil: *" >			
+				<p:selectOneMenu value="#{bean.estadoCivil}" required="true">  
+                       <f:selectItem itemLabel="Selecione..." />  
+                       <f:selectItems value="#{bean.estadosCivis}" var="item" itemLabel="#{item.descricao}"  />  
+                   </p:selectOneMenu>  							
+			</caesb:linhaForm>
+					
+			<caesb:linhaForm >			
+				<p:commandButton value="Gerar relatório" update=":form1" actionListener="#{bean.gerarRelatorio}" 
+					oncomplete="if (args.download) jQuery('.btDownload').click()" />						
+			</caesb:linhaForm>			
+			
+		</h:form>
+				
+		<h:form id="form2" target="_blank">		
+			<p:commandButton styleClass="btDownload" actionListener="#{bean.download}" 
+				ajax="false" style="display: none" />	
+		</h:form>
+		
+	</ui:define>
+	
+</ui:composition>

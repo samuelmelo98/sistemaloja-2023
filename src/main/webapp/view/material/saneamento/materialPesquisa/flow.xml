@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<flow xmlns="http://www.springframework.org/schema/webflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow 
+		http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+	parent="parent-flow">
+
+	<secured attributes="PES_DOSSIE_AUTUACAO" />
+
+	<var name="pesquisaBean" class="caesb.exemplo.web.bean.material.saneamento.MaterialPesquisaBean" />
+	<var name="edicaoBean" class="caesb.exemplo.web.bean.material.saneamento.MaterialEdicaoBean" />
+
+	<on-start>
+		<evaluate expression="pesquisaBean.iniciar()" />
+		<evaluate expression="edicaoBean.setMaterialPesquisaBean(pesquisaBean)"/>
+	</on-start>
+
+	<view-state id="materialMain" />
+
+</flow>

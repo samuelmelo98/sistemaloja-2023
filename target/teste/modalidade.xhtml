@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<ui:composition 
+xmlns="http://www.w3.org/1999/xhtml" 
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui" 
+xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+
+	
+		<h:form>
+			<p:commandButton icon="ui-icon-document" value="Cadastrar" update=":form1" onclick="PF('dlg').show()" />
+		</h:form>
+	
+	<h:form id="form2">
+		<p:dataTable tableStyleClass="LayoutAuto">
+			<p:column headerText="Col1">
+			<h:outputText value="carrega valor EL"/>
+			</p:column>
+			<p:column headerText="Col2">
+			<h:outputText value="carrega valor EL"/>
+			</p:column>
+			<!-- Botoes editar e excluir -->
+			<h:column>
+				<p:menuButton>
+					<p:menuitem icon="ui-icon-pencil" value="Alterar Modalidade" update=":form1" oncomplete="PF(dlg).show()" />
+					<p:menuitem icon="ui-icon-trash" value="remover Modadlidade" update=":form2"/>
+				</p:menuButton>
+			</h:column>
+		</p:dataTable>
+	</h:form>
+	<ui:define name="rodape">
+		<ui:include src="modalidadeEdicao.xhtml" />
+	</ui:define>
+</ui:composition>

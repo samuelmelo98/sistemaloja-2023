@@ -1,0 +1,12 @@
+teste\model\Cliente.class
+config\Config.class
+teste\service\Iniciar.class
+repositorios\ClienteRepositorio.class
+teste\controle\UserWizard.class
+teste\controle\TesteBean.class
+teste\model\User.class
+teste\model\Teste.class
+teste\service\ClienteService.class
+teste\controle\PessoaBean.class
+teste\model\Pessoa.class
+teste\controle\ClienteBean.class

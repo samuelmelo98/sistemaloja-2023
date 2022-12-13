@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:fragment
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:caesb="http://caesb/jsf">
+	
+		<style>
+			#panelVantagens .suporta {color: #00CC00; font-size: 130%; font-weight: bold; line-height: 16px; }
+			#panelVantagens .nao_suporta {color: #CC0000; font-size: 130%; font-weight: bold; line-height: 16px;}
+		</style>
+		
+		<p:overlayPanel id="panelVantagens" for="formFiltro:btVantagens" hideEffect="fade" style="margin-top: 2em">
+    	
+			<p:panelGrid id="tblVantagens" style="width: 100%;" >
+   				<f:facet name="header">
+   					<p:row>
+       					<p:column /> 
+						<p:column>Busca Tradicional</p:column>
+						<p:column>Superbusca</p:column>
+					</p:row>
+				</f:facet>
+				
+   				<p:row>
+					<p:column>Acentuação</p:column>
+					<p:column styleClass="suporta">&#10004;</p:column>
+					<p:column styleClass="suporta">&#10004;</p:column>
+				</p:row>
+				
+   				<p:row>
+					<p:column>Letras maiúsculas e minúsculas</p:column>
+					<p:column styleClass="suporta">&#10004;</p:column>
+					<p:column styleClass="suporta">&#10004;</p:column>
+				</p:row>
+				
+   				<p:row>
+					<p:column>Busca aproximada (ex: ricrdo)</p:column>
+					<p:column styleClass="nao_suporta">&#10008;</p:column>
+					<p:column styleClass="suporta">&#10004;</p:column>
+				</p:row>
+				
+   				<p:row>
+					<p:column>Busca fonética (ex: souza/sousa; giovane/jiovani)</p:column>
+					<p:column styleClass="nao_suporta">&#10008;</p:column>
+					<p:column styleClass="suporta">&#10004;</p:column>
+				</p:row>
+				
+   				<p:row>
+					<p:column>Busca morfológica (ex: belo/beleza, casa/caseiro/casarão)</p:column>
+					<p:column styleClass="nao_suporta">&#10008;</p:column>
+					<p:column styleClass="suporta">&#10004;</p:column>
+				</p:row>
+				
+   				<p:row>
+					<p:column>Busca por sentença (ex: maria sousa &gt; maria clara sousa)</p:column>
+					<p:column styleClass="nao_suporta">&#10008;</p:column>
+					<p:column styleClass="suporta">&#10004;</p:column>
+				</p:row>
+				
+   				<p:row>
+					<p:column>Alta performance</p:column>
+					<p:column styleClass="nao_suporta">&#10008;</p:column>
+					<p:column styleClass="suporta">&#10004;</p:column>
+				</p:row>
+				
+   				<p:row>
+					<p:column>Ranqueamento dos resultados</p:column>
+					<p:column styleClass="nao_suporta">&#10008;</p:column>
+					<p:column styleClass="suporta">&#10004;</p:column>	
+				</p:row>							 
+			</p:panelGrid>
+		
+		</p:overlayPanel>
+		
+</ui:fragment>

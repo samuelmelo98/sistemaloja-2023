@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:fragment
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:caesb="http://caesb/jsf">
+
+		<p:dialog appendTo="@(body)" header="Cadastro de Relatório" resizable="false" modal="true" position="center" widgetVar="dlg" width="800">							
+			<h:form id="form1">
+					
+				<caesb:linhaForm label="Nome: *">			
+					<p:inputText value="#{bean.relatorio.nome}" required="true" maxlength="200" size="50"/>								
+				</caesb:linhaForm>
+				
+				<caesb:linhaForm label="Descrição:">			
+					<p:inputTextarea value="#{bean.relatorio.descricao}" size="40" cols="100" rows="5" />								
+				</caesb:linhaForm>
+		
+				<caesb:linhaForm label="SQL: *">			
+					<p:inputTextarea value="#{bean.relatorio.sql}" size="40" cols="100" rows="20" />								
+				</caesb:linhaForm>
+				
+				<center>						
+					<p:commandButton icon="ui-icon-disk" value="Salvar" update=":form1,:form2" actionListener="#{bean.alterar}" 
+						rendered="#{bean.relatorio.id != null}" oncomplete="if (args.fechar) PF('dlg').hide()" />	
+					
+					<p:commandButton icon="ui-icon-disk" value="Salvar" update=":form1,:form2" actionListener="#{bean.cadastrar}" 
+						rendered="#{bean.relatorio.id == null}" oncomplete="if (args.fechar) PF('dlg').hide()" />					
+				</center>
+				
+			</h:form>		
+		</p:dialog>
+		
+</ui:fragment>

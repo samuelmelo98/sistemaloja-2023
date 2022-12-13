@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition template="/view/template/padrao.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:caesb="http://caesb/jsf">
+
+	<ui:define name="titulo">Modalidade</ui:define>
+
+	<ui:define name="botoes">
+		<h:form>
+			<p:commandButton icon="ui-icon-document" value="Cadastrar" actionListener="#{bean.criar}" update=":form1"
+				oncomplete="PF('dlg').show()" />
+		</h:form>
+	</ui:define>
+
+	<ui:define name="conteudo">
+
+		<h:form id="form3">
+			<h:panelGrid columns="2">
+
+				<caesb:linhaForm label="Sigla:" labelWidth="auto">
+					<p:inputText value="#{bean.filtroSigla}" />
+					<p:commandButton icon="ui-icon-search" value="Pesquisar" update=":form2" actionListener="#{bean.pesquisar(true)}" />
+				</caesb:linhaForm>
+
+
+			</h:panelGrid>
+		</h:form>
+
+		<h:form id="form2">
+
+			<p:dataTable tableStyleClass="layoutAuto" var="item" value="#{bean.modalidades}" paginator="true" paginatorPosition="bottom"
+				rowsPerPageTemplate="10,20,50" rows="10">
+
+				<p:column headerText="Sigla" sortBy="#{item.sigla}">
+					<h:outputText value="#{item.sigla}" />
+				</p:column>
+
+				<p:column headerText="Descrição" sortBy="#{item.descricao}">
+					<h:outputText value="#{item.descricao}" />
+				</p:column>
+
+				<p:column styleClass="menuBotoes">
+					<p:commandButton icon="ui-icon-pencil" actionListener="#{bean.setModalidade(item)}" update="form1"
+						oncomplete="PF('dlg').show()" />
+
+					<p:commandButton icon="ui-icon-trash" update="form2" actionListener="#{bean.remover(item)}" onclick="if (!confirm('Deseja excluir?')) return false"/>
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+
+	</ui:define>
+
+	<ui:define name="rodape">
+		<ui:include src="modalidadeEdicao.xhtml" />
+	</ui:define>
+
+</ui:composition>

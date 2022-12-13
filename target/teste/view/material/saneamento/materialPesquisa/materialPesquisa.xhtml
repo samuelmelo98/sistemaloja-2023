@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+	xmlns:caesb="http://caesb/jsf">
+
+	<p:fieldset legend="Pesquisar Material Principal">
+
+		<h:form id="formPesquisa">
+
+			<p:defaultCommand target="btnSubmit" />
+			<h:panelGrid>
+				<caesb:linhaForm label="Situação:" id="impressa" labelWidth="80px">
+					<p:selectOneMenu value="#{pesquisaBean.filtro.situacao}" style="width:120px;">
+						<f:selectItems value="#{pesquisaBean.situacoes}" var="item" itemLabel="#{item.descricao}" />
+					</p:selectOneMenu>
+				</caesb:linhaForm>
+				<caesb:linhaForm label="Termo 1:" labelWidth="80px">
+					<p:inputText value="#{pesquisaBean.filtro.termo1}" size="80" />
+				</caesb:linhaForm>
+				<caesb:linhaForm label="Termo 2:" labelWidth="80px">
+					<p:inputText value="#{pesquisaBean.filtro.termo2}" size="80" />
+				</caesb:linhaForm>
+				<caesb:linhaForm label="Termo 3:" labelWidth="80px">
+					<p:inputText value="#{pesquisaBean.filtro.termo3}" size="80" />
+				</caesb:linhaForm>
+				<caesb:linhaForm label="Termo 4:" labelWidth="80px">
+					<p:inputText value="#{pesquisaBean.filtro.termo4}" size="80" />
+				</caesb:linhaForm>
+				<caesb:linhaForm label="Termo 5:" labelWidth="80px">
+					<p:inputText value="#{pesquisaBean.filtro.termo5}" size="80" />
+				</caesb:linhaForm>
+			</h:panelGrid>
+
+			<center>
+				<p:commandButton value="Pesquisar" action="#{pesquisaBean.pesquisar}" update="formPesquisa,:formMain" id="btnSubmit" />
+				<p:commandButton value="Limpar pesquisa" action="#{pesquisaBean.limparPesquisa}" update="@form" id="btnLimpar" />
+			</center>
+
+			<p:dataTable tableStyleClass="layoutAuto" id="tableMaterial" var="item" value="#{pesquisaBean.dataModel}" paginator="true" paginatorPosition="bottom"
+				rowKey="#{item.id}" rows="10" rowsPerPageTemplate="10,20,50" emptyMessage="Nenhum registro encontrado."
+				rowStyleClass="#{pesquisaBean.definirCorLinha(item)}">
+
+				<f:facet name="header">
+						#{pesquisaBean.totalItens} #{pesquisaBean.totalItens>1?'materiais':'material'} #{pesquisaBean.totalItens>1?'encontrados.':'encontrado.'} 
+					</f:facet>
+
+				<p:column headerText="Código" style="text-align: center;">
+					<h:outputText value="#{item.codMaterial}" />
+				</p:column>
+				<p:column headerText="Descrição" style="text-align: center;">
+					<h:outputText value="#{item.descricao}" />
+				</p:column>
+				<p:column headerText="Especificação" style="text-align: center;">
+					<h:outputText value="#{item.especificacao}" />
+				</p:column>
+				<p:column headerText="Uni. Medida" style="text-align: center;">
+					<h:outputText value="#{item.unidadeMedida.unidadeMedida}" />
+				</p:column>
+				<p:column headerText="Origem" style="text-align: center;">
+					<h:outputText value="#{item.origemMaterialEnum}" />
+				</p:column>
+				<p:column styleClass="menuBotoes">
+					<p:commandButton icon="ui-icon-check" actionListener="#{edicaoBean.iniciar(item.id)}" update=":formMain" />
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+	</p:fieldset>
+</ui:fragment>

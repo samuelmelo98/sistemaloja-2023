@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:fragment
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:caesb="http://caesb/jsf">
+				
+	<p:panel header="Contatos" id="panelContatos">
+																		
+		<h:panelGrid columns="1" rendered="#{bean.contato eq null}">		
+
+			<p:commandButton icon="ui-icon-plus" actionListener="#{bean.criarContato()}" 
+				process="@this" update=":form1:panelContatos"/>
+						
+		</h:panelGrid>       
+										
+		<h:panelGrid columns="5" rendered="#{bean.contato ne null}">		
+
+			<caesb:linhaForm labelWidth="auto">
+				<p:inputText value="#{bean.contato.nome}" size="20" id="contnome" required="true"/>
+				<p:watermark value="nome" for="contnome"/>
+			</caesb:linhaForm>
+			
+			<caesb:linhaForm labelWidth="auto">
+				<p:inputText value="#{bean.contato.telefone}" size="10" id="conttel" required="true"/>
+				<p:watermark value="telefone" for="conttel"/>
+			</caesb:linhaForm>
+				
+			<p:commandButton icon="ui-icon-check" actionListener="#{bean.cadastrarContato}" 
+				process=":form1:panelContatos" update=":form1:panelContatos" rendered="#{bean.contato.id eq null}" />
+				
+			<p:commandButton icon="ui-icon-check" actionListener="#{bean.alterarContato}" 
+				process=":form1:panelContatos" update=":form1:panelContatos" rendered="#{bean.contato.id ne null}" />
+				
+			<p:commandButton icon="ui-icon-close" actionListener="#{bean.setContato(null)}" 
+				process="@this" update=":form1:panelContatos"/>
+		
+		</h:panelGrid>       
+			
+		<p:dataTable tableStyleClass="layoutAuto" var="item" value="#{bean.contatos}" emptyMessage="Nenhum contato">  
+       					
+	        <p:column headerText="Nome">#{item.nome}</p:column>  
+	        <p:column headerText="Telefone">#{item.telefone}</p:column>  
+	        <p:column styleClass="menuBotoes">
+	        
+				<caesb:menuButton>
+					<p:menuitem icon="ui-icon-pencil" value="Alterar Contato" actionListener="#{bean.setContato(item)}" 
+						process="@this" update=":form1:panelContatos" />
+					
+					<p:menuitem icon="ui-icon-trash" value="Remover Contato" actionListener="#{bean.removerContato(item)}" 
+						process="@this" update=":form1:panelContatos" />
+				</caesb:menuButton>
+				
+			</p:column>  
+        
+        </p:dataTable>
+      
+	</p:panel>	
+
+</ui:fragment>

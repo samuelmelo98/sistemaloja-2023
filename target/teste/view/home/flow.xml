@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow 
+		http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+	parent="parent-flow">
+	
+	<var name="arquivosLogBean" class="caesb.websupport.web.bean.administracao.BaseArquivosLogBean" />
+	<var name="performanceBean" class="caesb.websupport.web.bean.administracao.BasePerformanceBean" />
+	<var name="recursosServidorBean" class="caesb.websupport.web.bean.administracao.BaseRecursosServidorBean" />
+	<var name="sessoesAtivasBean" class="caesb.websupport.web.bean.administracao.BaseSessoesAtivasBean" />
+	<var name="historicoRevisaoBean" class="caesb.websupport.web.bean.administracao.BaseHistoricoRevisaoBean" />
+	
+	<!-- opcional -->
+	<var name="executoresBean"  class="caesb.websupport.web.bean.administracao.processosBatch.BaseProcessosBatchExecutoresBean" />
+	
+	<on-start>
+		<evaluate expression="recursosServidorBean.iniciar()" />
+	</on-start>
+	
+	<view-state id="index" />
+	
+</flow>

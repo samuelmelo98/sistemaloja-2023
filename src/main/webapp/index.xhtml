@@ -1,0 +1,229 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:caesb="http://caesb/jsf">
+
+<h:head>
+
+</h:head>
+
+
+<h:body>
+
+<style>
+    .label {
+        width: 20%;
+        padding: 4px;
+    }
+
+    .value {
+        width: 80%;
+        padding: 4px;
+    }
+
+    .grid {
+        width: 100%;
+    }
+
+    .error {
+        color: red;
+    }
+
+    .outputLabel {
+        font-weight: bold;
+    }
+
+    .grid {
+        width: 33%;
+        padding: 4px;
+    }
+</style>
+
+	<div class="card">
+		<h:form id="form1">
+			<p:progressBar id="progressBarIndeterminate" style="height:6px"
+				mode="indeterminate" />
+			<p:growl id="msg" sticky="false" showDetail="true" life="2000" />
+
+			<p:wizard flowListener="#{clienteBean.onFlowProcess}">
+				<p:tab id="personal" title="Cadastro de Cliente">
+					<p:panel header="Dados do Cliente">
+						<p:messages />
+						<h:panelGrid columns="2" columnClasses="label, value">
+							<h:outputText value="Nome Cliente: *" />
+							<p:inputText value="#{clienteBean.cliente.nomeCliente}"
+								required="true" label="Nome Cliente" autocomplete="false"
+								placeholder="">
+								<f:validateLength minimum="3" />
+							</p:inputText>
+
+							<h:outputText value="Sobre Nome: *" />
+							<p:inputText value="#{clienteBean.cliente.sobreNomeCliente}"
+								required="true" label="Sobre Nome" />
+
+							<h:outputText value="CPF Cliente: *" />
+							<p:inputText value="#{clienteBean.cliente.cpfCliente}"
+								required="true" label="Sobre Nome" />
+
+							<!--h:outputText value="Age: "/>
+                        <p:inputText value="#{userWizard.user.age}"/>
+
+                        <h:outputText value="Skip to last: "/>
+                        <h:selectBooleanCheckbox value="#{userWizard.skip}"/-->
+						</h:panelGrid>
+					</p:panel>
+				</p:tab>
+
+				<p:tab id="address" title="Endereço">
+					<p:panel header="Endereço Cliente">
+						<p:messages />
+						<h:panelGrid columns="2" columnClasses="label, value">
+							<h:outputText value="Bairro: " />
+							<p:inputText value="#{clienteBean.cliente.enderecoCliente}" />
+
+							<h:outputText value="CEP: " />
+							<p:inputText value="#{clienteBean.cliente.enderecoCliente}" />
+
+							<h:outputText value="Cidade: " />
+							<p:inputText value="#{clienteBean.cliente.enderecoCliente}" />
+
+							<h:outputText value="Skip to last: " />
+							<h:selectBooleanCheckbox value="#{userWizard.skip}" />
+						</h:panelGrid>
+					</p:panel>
+				</p:tab>
+
+				<p:tab id="contact" title="Contato Cliente">
+					<p:panel header="Contato Cliente">
+						<p:messages />
+						<h:panelGrid columns="2" columnClasses="label, value">
+							<h:outputText value="Email: *" />
+							<p:inputText value="#{clienteBean.cliente.emailCliente}"
+								required="true" label="Email" />
+
+							<h:outputText value="Telefone: " />
+							<p:inputText value="#{clienteBean.cliente.telefoneCliente}" />
+
+							<h:outputText value="Additional Info: " />
+							<p:inputText value="#{userWizard.user.info}" />
+						</h:panelGrid>
+					</p:panel>
+				</p:tab>
+					
+				<p:tab id="confirm" title="Confirmação">
+					<p:panel header="Confirmação">
+						<h:panelGrid id="confirmation" columns="3"
+							columnClasses="grid,grid,grid">
+							<h:panelGrid columns="2" columnClasses="label, value">
+								<h:outputText value="Nome Cliente: " />
+								<h:outputText value="#{clienteBean.cliente.nomeCliente}"
+									styleClass="outputLabel" />
+
+								<h:outputText value="Sobre nome cliente: " />
+								<h:outputText value="#{clienteBean.cliente.sobreNomeCliente}"
+									styleClass="outputLabel" />
+
+								<h:outputText value="CPF Cliente " />
+								<h:outputText value="#{clienteBean.cliente.cpfCliente}"
+									styleClass="outputLabel" />
+
+								<h:outputText value="Age: " />
+								<h:outputText value="#{userWizard.user.age}"
+									styleClass="outputLabel" />
+							</h:panelGrid>
+
+							<h:panelGrid columns="2" columnClasses="label, value">
+								<h:outputText value="Bairro: " />
+								<h:outputText value="#{clienteBean.cliente.enderecoCliente}"
+									styleClass="outputLabel" />
+
+								<h:outputText value="CEP: " />
+								<h:outputText value="#{clienteBean.cliente.enderecoCliente}"
+									styleClass="outputLabel" />
+
+								<h:outputText value="Cidade: " />
+								<h:outputText value="#{clienteBean.cliente.enderecoCliente}"
+									styleClass="outputLabel" />
+							</h:panelGrid>
+
+							<h:panelGrid columns="2" columnClasses="label, value">
+								<h:outputText value="Email: " />
+								<h:outputText value="#{clienteBean.cliente.emailCliente}"
+									styleClass="outputLabel" />
+
+								<h:outputText value="Telefone " />
+								<h:outputText value="#{clienteBean.cliente.telefoneCliente}"
+									styleClass="outputLabel" />
+
+
+								<h:outputText value="Info: " />
+								<h:outputText value="#{userWizard.user.info}"
+									styleClass="outputLabel" />
+
+								<h:outputText />
+								<h:outputText />
+							</h:panelGrid>
+						</h:panelGrid>
+
+						<p:commandButton value="Salvar"
+							action="#{clienteBean.adicionarCliente}" update="msg clientes"
+							process="@this" />
+
+					</p:panel>
+				</p:tab>
+			</p:wizard>
+		</h:form>
+
+		<h:form id="testt">
+			<p:commandButton value="teste"
+				action="#{clienteBean.pesquisarClientes}" update="clientes"></p:commandButton>
+
+		</h:form>
+
+
+		<div class="card">
+			<p:panel header="Clientes Cadastrados">
+				<p:dataTable var="valor" value="#{clienteBean.clientes}"
+					id="clientes" paginatorPosition="bottom" rowsPerPageTemplate="2,5,10" rows="10">
+					<p:column headerText="CPF">
+						<h:outputText value="#{valor.cpfCliente}" />
+					</p:column>
+					<p:column headerText="Nome">
+						<h:outputText value="#{valor.nomeCliente}" />
+					</p:column>
+					<p:column headerText="Sobre Nome">
+						<h:outputText value="#{valor.sobreNomeCliente}" />
+					</p:column>
+					<p:column headerText="Telefone">
+						<h:outputText value="#{valor.telefoneCliente}" />
+					</p:column>
+					<p:column headerText="Email">
+						<h:outputText value="#{valor.emailCliente}" />
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</div>
+
+	</div>
+	<div>
+
+
+
+		<p:dialog appendTo="@(body)" header="Editar Cliente" widgetVar="dlg1"
+			minHeight="40">
+			<h:form id="form3">
+    		<p:inputText value="#{clienteBean.cliente.nomeCliente}"></p:inputText>
+				<p:inputText value="#{clienteBean.cliente.nomeCliente}"></p:inputText>
+				<p:inputText value="#{valor.clienteTelefone}"></p:inputText>
+			</h:form>
+		</p:dialog>
+
+
+	</div>
+
+
+</h:body>
+
+
+</html>

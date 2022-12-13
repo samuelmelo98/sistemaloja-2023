@@ -1,0 +1,141 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>br.com.samuel</groupId>
+	<artifactId>teste</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<profiles>
+		<profile>
+			<id>desenvolvimento</id>
+			<build>
+				<finalName>${project.name}</finalName>
+			</build>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<app.ambiente>desenvolvimento</app.ambiente>
+				<app.hidtorico>true</app.hidtorico>
+				<app.dataSource>jdbc/${project.name}</app.dataSource>
+			</properties>
+		</profile>
+
+	</profiles>
+
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.glassfish/javax.faces -->
+		<!--dependency> <groupId>org.glassfish</groupId> <artifactId>javax.faces</artifactId> 
+			<version>2.3.0</version> <scope>compile</scope> </dependency -->
+		<!--dependency> <groupId>org.jboss.weld.servlet</groupId> <artifactId>weld-servlet</artifactId> 
+			<version>2.2.0.Final</version> <scope>compile</scope> </dependency -->
+		<!-- https://mvnrepository.com/artifact/org.jboss.weld.servlet/weld-servlet-core -->
+		<dependency>
+			<groupId>org.jboss.weld.servlet</groupId>
+			<artifactId>weld-servlet-core</artifactId>
+			<version>3.0.0.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.24</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.jboss/jandex -->
+		<!--dependency> <groupId>org.jboss</groupId> <artifactId>jandex</artifactId> 
+			<version>1.2.3.Final</version> <scope>compile</scope> </dependency -->
+		<!-- Ultima versão Jandex 2022 -->
+		<dependency>
+			<groupId>org.jboss</groupId>
+			<artifactId>jandex</artifactId>
+			<version>3.0.2</version>
+			<type>pom</type>
+		</dependency>
+		<!--Prime faces 10 -->
+		<dependency>
+			<groupId>org.primefaces</groupId>
+			<artifactId>primefaces</artifactId>
+			<version>10.0.0</version>
+		</dependency>
+		<!-- Mojarra março de 2018 -->
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.faces</artifactId>
+			<version>2.4.0</version>
+		</dependency>
+		<!-- Maven plungin -->
+
+		<!-- jpa -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>5.4.10.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>5.4.10.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.19</version>
+
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.springframework.webflow</groupId>
+			<artifactId>spring-webflow</artifactId>
+			<version>2.5.1.RELEASE</version>
+		</dependency>
+
+		<!-- Spring boot JPA repositorios -->
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-data-jpa</artifactId> 
+			<version>2.5.0</version> </dependency> -->
+
+		<!-- Maven plungin -->
+
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.10.1</version>
+		</dependency>
+
+
+
+
+	</dependencies>
+
+	<build>
+		<defaultGoal>jetty:run</defaultGoal>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+
+			<plugin>
+				<!-- Maven compiler estava usando versão 3.5 -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.10.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+
+
+
+		</plugins>
+	</build>
+
+
+</project>

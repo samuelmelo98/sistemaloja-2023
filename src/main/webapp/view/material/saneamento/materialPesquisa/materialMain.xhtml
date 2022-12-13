@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition template="/view/template/padrao.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:caesb="http://caesb/jsf">
+
+	<ui:define name="titulo">Saneamento de Materiais</ui:define>
+
+	<ui:define name="conteudo">
+		<style>
+.azul {
+	color: black;
+	background-color: CornflowerBlue;
+}
+
+.verde {
+	color: black;
+	background-color: LawnGreen;
+}
+
+.amarelo {
+	color: black;
+	background-color: yellow;
+}
+
+.vermelho {
+	color: black;
+	background-color: Tomato;
+}
+
+.cinza {
+	color: black;
+	background-color: Gainsboro;
+}
+</style>
+
+		<p:outputPanel id="formMain">
+			<p:outputPanel id="formPesquisaMain" rendered="#{pesquisaBean.isVisivel}">
+				<ui:include src="materialPesquisa.xhtml"></ui:include>
+			</p:outputPanel>
+
+			<p:outputPanel id="formEdicaoMain" rendered="#{edicaoBean.isVisivel}">
+				<ui:include src="materialEdicao.xhtml"></ui:include>
+			</p:outputPanel>
+		</p:outputPanel>
+
+	</ui:define>
+
+</ui:composition>

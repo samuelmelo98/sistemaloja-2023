@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:caesb="http://caesb/jsf">
+
+	<caesb:menu id="menuPrincipal">
+	
+		  <caesb:submenu nome="CADASTRO">		  
+			    <caesb:itemMenu     url="app/cadastro/modalidade"  					nome="Modalidade (crud básico)" />	
+			    <caesb:itemMenu     url="app/cadastro/usuario"  					nome="Usuário (crud intermediário)" />	
+			    <caesb:itemMenu     url="app/cadastro/cliente/clientePesquisa"  	nome="Cliente (fluxo)" />				    			    
+		  </caesb:submenu>	
+	
+		  <caesb:submenu nome="CADASTRO (sem flow)">		  
+			    <caesb:itemMenu     url="/pages/cadastro/modalidade/modalidade.xhtml"  					nome="Modalidade (crud básico)" />	
+			    <caesb:itemMenu     url="/pages/cadastro/usuario/usuario.xhtml"  					nome="Usuário (crud intermediário)" />	
+			    <caesb:itemMenu     url="/pages/cadastro/cliente/clientePesquisa/clientePesquisa.xhtml"  	nome="Cliente (fluxo)" />				    			    
+		  </caesb:submenu>
+		  
+		  
+		  <caesb:submenu nome="RELATÓRIOS">		  
+			    <caesb:submenu nome="Relatórios (Jasper):">			    	
+			   		<caesb:itemMenu 	url="app/cadastro/relatorioModalidades"  		nome="Relatório de Modalidades (simples)" />	
+			   		<caesb:itemMenu 	url="app/cadastro/relatorioUsuarios"  			nome="Relatório de Usuários (com parâmetro)" />	
+			   		<caesb:itemMenu 	url="app/cadastro/relatorioClientes"  			nome="Relatório de Clientes (com parâmetro)" />	
+			    </caesb:submenu>	
+			    			    
+			    <caesb:submenu nome="Relatórios (SQL):">			    	
+			   		<caesb:itemMenu 	url="app/cadastro/relatorio"  					nome="Relatórios" />	
+			    </caesb:submenu>				    
+		  </caesb:submenu>			    
+			                
+		  <caesb:submenu nome="GIS">		  
+		  		<caesb:itemMenu     url="app/gis"  						nome="Georreferenciamento (integração ArcGis HTML5)" />				    
+		  </caesb:submenu>			    
+			                
+		  <caesb:submenu nome="SUPERBUSCA">		  
+		  		<caesb:itemMenu     url="app/superbusca"  				nome="Superbusca de Clientes (indexação do Banco de Dados)" />				    
+		  </caesb:submenu>	
+		  
+		  <caesb:submenu nome="CADASTRO DE MATERIAIS">		  
+			    <caesb:itemMenu     url="app/material/saneamento/materialPesquisa"  nome="Saneamento de Materiais" />			    				    			    
+		  </caesb:submenu>		
+		        
+	</caesb:menu>
+
+</ui:composition>

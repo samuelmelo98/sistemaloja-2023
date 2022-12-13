@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+	xmlns:caesb="http://caesb/jsf">
+
+
+	<style>
+table td.campo {
+	width: 171px;
+	padding-top: 10px;
+}
+
+table td.botao {
+	padding-top: 8px;
+}
+
+table td.valor {
+	padding-top: 10px;
+}
+
+.not-clickable {
+	cursor: not-allowed;
+	pointer-events: none;
+}
+
+table td.campo2 {
+	width: 117px;
+	padding-bottom: 10px;
+	font-weight: bold;
+}
+
+table td.valor2 {
+	padding-top: 5px;
+	font-weight: bold;
+	color: #070;
+	border-color: #fff;
+}
+</style>
+
+	<h:form id="formEdicao">
+		<p:fieldset legend="Associar Material Correlato">
+			<p:fieldset legend="Dados do Material Principal">
+				<h:panelGrid columns="2" columnClasses="campo,valor,campo,valor" width="100%">
+
+					<h:outputText value="Código:" />
+					<h:outputText value="#{edicaoBean.materialPrincipal.codMaterial}" />
+
+					<h:outputText value="Descrição:" />
+					<h:outputText value="#{edicaoBean.materialPrincipal.descricao}" />
+
+					<h:outputText value="Especificação:" />
+					<h:outputText value="#{edicaoBean.materialPrincipal.especificacao}">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+
+					<h:outputText value="Tabela Origem:" />
+					<h:outputText value="#{edicaoBean.materialPrincipal.origemMaterialEnum.descricao}" />
+
+					<p:spacer />
+					<p:spacer />
+				</h:panelGrid>
+				<center>
+					<p:commandButton icon="ui-icon-alert" value="Desfazer Consolidação" id="desfazer" rendered="#{edicaoBean.materialPrincipal.getConsolidado()}"
+						action="#{edicaoBean.desfazerConsolidacao()}" update=":formMain" />
+				</center>
+			</p:fieldset>
+
+			<p:fieldset legend="Material Correlato Associado">
+				<p:dataTable tableStyleClass="layoutAuto" id="tableMaterialAssociado" var="item" value="#{edicaoBean.listaMaterialAssociado}" paginator="true"
+					paginatorPosition="bottom" rowKey="#{item.id}" rows="10" rowsPerPageTemplate="10,20,50"
+					emptyMessage="Nenhum registro encontrado.">
+
+					<f:facet name="header">
+							#{edicaoBean.listaMaterialAssociado.size()} #{edicaoBean.listaMaterialAssociado.size()>1?'materiais':'material'} #{edicaoBean.listaMaterialAssociado.size()>1?'encontrados.':'encontrado.'} 
+						</f:facet>
+
+					<p:column headerText="Código" style="text-align: center;">
+						<h:outputText value="#{item.codMaterial}" />
+					</p:column>
+					<p:column headerText="Descrição" style="text-align: center;">
+						<h:outputText value="#{item.descricao}" />
+					</p:column>
+					<p:column headerText="Especificação" style="text-align: center;">
+						<h:outputText value="#{item.especificacao}" />
+					</p:column>
+					<p:column headerText="Origem" style="text-align: center;">
+						<h:outputText value="#{item.origemMaterialEnum}" />
+					</p:column>
+					<p:column styleClass="menuBotoes">
+						<p:commandButton icon="ui-icon-close" actionListener="#{edicaoBean.removerAssociacao(item)}" update=":formMain" />
+					</p:column>
+				</p:dataTable>
+			</p:fieldset>
+			<center>
+				<p:commandButton icon="ui-icon-disk" value="Consolidar" action="#{edicaoBean.consolidar()}" update=":formMain" />
+				<p:commandButton icon="ui-icon-cancel" value="Cancelar" id="Cancelar" action="#{edicaoBean.voltar}" update=":formMain" />
+			</center>
+			<p:fieldset legend="Pesquisar Materiais Correlatos">
+				<h:form id="formPesquisa">
+					<p:defaultCommand target="btnPesquisar" />
+
+					<h:panelGrid>
+						<caesb:linhaForm label="Termo 1:" labelWidth="80px">
+							<p:inputText value="#{edicaoBean.filtro.termo1}" size="80" />
+						</caesb:linhaForm>
+						<caesb:linhaForm label="Termo 2:" labelWidth="80px">
+							<p:inputText value="#{edicaoBean.filtro.termo2}" size="80" />
+						</caesb:linhaForm>
+						<caesb:linhaForm label="Termo 3:" labelWidth="80px">
+							<p:inputText value="#{edicaoBean.filtro.termo3}" size="80" />
+						</caesb:linhaForm>
+						<caesb:linhaForm label="Termo 4:" labelWidth="80px">
+							<p:inputText value="#{edicaoBean.filtro.termo4}" size="80" />
+						</caesb:linhaForm>
+						<caesb:linhaForm label="Termo 5:" labelWidth="80px">
+							<p:inputText value="#{edicaoBean.filtro.termo5}" size="80" />
+						</caesb:linhaForm>
+					</h:panelGrid>
+
+					<center>
+						<p:commandButton value="Pesquisar" action="#{edicaoBean.pesquisar}" update="formPesquisa,:formMain" id="btnPesquisar" />
+					</center>
+
+					<p:dataTable tableStyleClass="layoutAuto" id="tableMaterial" var="item" value="#{edicaoBean.dataModel}" paginator="true" paginatorPosition="bottom"
+						rowKey="#{item.id}" rows="10" rowsPerPageTemplate="10,20,50" emptyMessage="Nenhum registro encontrado.">
+
+						<f:facet name="header">
+							#{edicaoBean.totalItens} #{edicaoBean.totalItens>1?'materiais':'material'} #{edicaoBean.totalItens>1?'encontrados.':'encontrado.'} 
+						</f:facet>
+
+						<p:column headerText="Código" style="text-align: center;">
+							<h:outputText value="#{item.codMaterial}" />
+						</p:column>
+						<p:column headerText="Descrição" style="text-align: center;">
+							<h:outputText value="#{item.descricao}" />
+						</p:column>
+						<p:column headerText="Especificação" style="text-align: center;">
+							<h:outputText value="#{item.especificacao}" />
+						</p:column>
+						<p:column headerText="Origem" style="text-align: center;">
+							<h:outputText value="#{item.origemMaterialEnum}" />
+						</p:column>
+						<p:column styleClass="menuBotoes">
+							<p:commandButton icon="ui-icon-check" actionListener="#{edicaoBean.associarMaterial(item)}" update=":formMain"
+								rendered="#{item.id ne edicaoBean.materialPrincipal.id}" />
+						</p:column>
+
+					</p:dataTable>
+				</h:form>
+			</p:fieldset>
+
+		</p:fieldset>
+
+	</h:form>
+
+</ui:fragment>

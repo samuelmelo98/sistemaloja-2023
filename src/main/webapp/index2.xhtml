@@ -1,0 +1,45 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+
+<h:body>
+	<!-- <p:spinner /> -->
+	<p:separator></p:separator>
+	<h:form title="Formulário">
+		<br />
+		<h:outputLabel value="Nome" for="nome"></h:outputLabel>
+		<br />
+		<p:inputText id="nome" value="#{bean.pessoa.nome}" required="true"></p:inputText>
+		<br />
+		<h:outputLabel value="ID" for="id"></h:outputLabel>
+		<br />
+		<p:inputText type="Number" id="id" value="#{bean.pessoa.id}"></p:inputText>
+		<br />
+		<p:commandButton value="Ação" actionListener="#{bean.adicionar}" update=" nome var1 var2 tabela"></p:commandButton>
+
+	</h:form>
+
+	<p:separator></p:separator>
+	<h1>Ações!</h1>
+	<h:outputText value="#{bean.pessoas}" id="var1"></h:outputText>
+	<br />
+	<p:inputText value="#{bean.pessoas}" id="var2"></p:inputText>
+	<p:separator></p:separator>
+
+	<div class="card">
+		<p:dataTable var="loop" value="#{bean.pessoas}" id="tabela">
+			<p:column headerText="ID">
+				<h:outputText value="#{loop.id}" />
+			</p:column>
+			<p:column headerText="Nome">
+				<h:outputText value="#{loop.nome}" />
+			</p:column>
+		</p:dataTable>
+
+	</div>
+
+
+</h:body>
+</html>

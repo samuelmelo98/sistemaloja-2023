@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow 
+		http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+	
+	<var name="bean" class="caesb.websupport.web.bean.administracao.processosBatch.BaseProcessosBatchBean" />
+	<var name="detalhesProcessoBean" class="caesb.websupport.web.bean.administracao.processosBatch.BaseProcessosBatchDetalhesProcessoBean" />
+	<var name="solicitacoesBean" class="caesb.websupport.web.bean.administracao.processosBatch.BaseProcessosBatchSolicitacoesBean" />	
+	<var name="agendamentosBean" class="caesb.websupport.web.bean.administracao.processosBatch.BaseProcessosBatchAgendamentosBean" />
+	<var name="executoresBean" class="caesb.websupport.web.bean.administracao.processosBatch.BaseProcessosBatchExecutoresBean" />
+	
+	<on-start>
+		<evaluate expression="bean.setExecutoresBean(executoresBean)" />
+		<evaluate expression="bean.setSolicitacoesBean(solicitacoesBean)" />
+		<evaluate expression="bean.setAgendamentosBean(agendamentosBean)" />
+	</on-start>
+	
+	<view-state id="index" />
+	
+</flow>

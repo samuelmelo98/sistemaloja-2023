@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/webflow
+        http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+    
+    <!-- 
+    <persistence-context />
+    
+    <var name="solicitacaoEditBean" class="br.vialogica.sae.view.solicitacao.SolicitacaoEditBean"/>
+    <var name="domainListHelper" class="br.vialogica.sae.view.DomainListHelper"/>
+    
+    <on-start>
+        <evaluate expression="domainListHelper.getUsuarioLogado()"  result="flowScope.usuario"></evaluate>
+    </on-start>
+        
+    <end-state id="error" />
+    
+    <global-transitions>
+        <transition on="newSolicitacao">
+            <evaluate expression="0" result="solicitacaoEditBean.activeTab"/>
+        </transition>
+    	<transition on-exception="java.lang.RuntimeException" to="error" />
+    </global-transitions>
+	-->
+ 
+</flow>

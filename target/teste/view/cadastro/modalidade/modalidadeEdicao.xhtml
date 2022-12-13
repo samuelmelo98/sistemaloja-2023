@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:fragment
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:caesb="http://caesb/jsf">
+
+		<p:dialog appendTo="@(body)" header="Cadastro de Modalidade" resizable="false" modal="true" position="center" widgetVar="dlg">							
+			<h:form id="form1">
+					
+				<caesb:linhaForm label="Sigla: *" >			
+					<p:inputText value="#{bean.modalidade.sigla}" required="true" maxlength="4" size="40"/>								
+				</caesb:linhaForm>
+				
+				<caesb:linhaForm label="Descrição: *" >			
+					<p:inputText value="#{bean.modalidade.descricao}" required="true" size="40"/>								
+				</caesb:linhaForm>
+				
+				<center>						
+					<p:commandButton icon="ui-icon-disk" value="Salvar" update=":form1,:form2" actionListener="#{bean.alterar}" 
+						rendered="#{bean.modalidade.id != null}" oncomplete="if (args.fechar) PF('dlg').hide()" />	
+					
+					<p:commandButton icon="ui-icon-disk" value="Salvar" update=":form1,:form2" actionListener="#{bean.cadastrar}" 
+						rendered="#{bean.modalidade.id == null}" oncomplete="if (args.fechar) PF('dlg').hide()" />					
+				</center>
+				
+			</h:form>		
+		</p:dialog>
+		
+</ui:fragment>

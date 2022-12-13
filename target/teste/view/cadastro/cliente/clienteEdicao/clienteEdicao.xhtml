@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition template="/view/template/padrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:caesb="http://caesb/jsf">
+
+	<ui:define name="titulo">Cadastro de Cliente</ui:define>
+								
+	<ui:define name="conteudo">	
+		
+		<style>		
+			.ui-linha-form th { width: 150px }
+		</style>
+				
+		<h:form id="form1">	
+			
+			<ul>
+				<li><b>Evite validação <tt>blur</tt></b>: O click no botão Salvar pode falhar pois o botão
+				desde na tela após o evento <tt>blur</tt> e o click é processado após essa atualização do HTML.</li>
+			
+				<li>O painel de telefones mostra um modelo de cadastro de coleção. Vantagem: usuário pode alterar todos
+				os itens ao mesmo tempo. Desvantagem: validações não podem ficar no JSF (apenas no Serviço).</li>
+	
+				<li>O painel de contatos mostra outro modelo de cadastro de coleção. Vantagem: pode-se usar validações no JSF. 
+				Desvantagem: usuário altera um item por vez.</li>
+			</ul>
+												
+			<h:panelGrid columns="2" columnClasses="c2,c2" width="100%">
+		
+				<h:panelGroup>				
+					<ui:include src="clienteEdicaoDadosBasicos.xhtml" />
+					<ui:include src="clienteEdicaoEndereco.xhtml" />
+					<ui:include src="clienteEdicaoArquivos.xhtml" />
+				</h:panelGroup>
+				
+				<h:panelGroup>				
+					<ui:include src="clienteEdicaoTelefones.xhtml" />
+					<ui:include src="clienteEdicaoContatos.xhtml" />
+				</h:panelGroup>
+				
+			</h:panelGrid>
+						
+			<center>
+				<p:commandButton icon="ui-icon-disk" value="Salvar" action="#{bean.cadastrar(false)}" update=":form1"
+					rendered="#{bean.cliente.id eq null}" />
+				
+				<p:commandButton icon="ui-icon-disk" value="Salvar e continuar" action="#{bean.cadastrar(true)}" update=":form1"
+					rendered="#{bean.cliente.id eq null}" />
+					
+				<p:commandButton icon="ui-icon-disk" value="Salvar" action="#{bean.alterar}" update=":form1" 
+					rendered="#{bean.cliente.id ne null}" />										
+			</center>
+		
+		</h:form>
+				
+	</ui:define>	
+	
+	<ui:define name="rodape">
+		<ui:include src="clienteEdicaoArquivoEdicao.xhtml" />	
+	</ui:define>
+			
+</ui:composition>

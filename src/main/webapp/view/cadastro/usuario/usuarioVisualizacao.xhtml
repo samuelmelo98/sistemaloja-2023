@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:fragment
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:caesb="http://caesb/jsf">
+
+		<p:dialog appendTo="@(body)" header="Usuário" resizable="false" modal="true" position="center" widgetVar="dlgVisualizacao">							
+			<h:form id="form4">
+					
+				<h:panelGrid columns="2" columnClasses="campo,valor">
+				
+					<h:outputText value="Matrícula:" />			
+					<h:outputText value="#{bean.usuario.matricula}" />	
+					
+					<h:outputText value="CPF:" />			
+					<h:outputText value="#{bean.usuario.cpf}" converter="#{cpfConverter}" />
+					
+					<h:outputText value="Nome:" />			
+					<h:outputText value="#{bean.usuario.nome}" />			
+					
+					<h:outputText value="Ativo:" />	
+					<h:outputText value="#{bean.usuario.ativo == true ? 'Sim' : 'Não'}" /> 	
+				
+				</h:panelGrid>
+				
+			</h:form>		
+		</p:dialog>
+		
+</ui:fragment>

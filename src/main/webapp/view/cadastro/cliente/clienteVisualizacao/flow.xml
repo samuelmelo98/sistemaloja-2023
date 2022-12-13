@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow 
+		http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+	parent="parent-flow">
+	    
+	<var name="bean" class="caesb.exemplo.web.bean.cadastro.cliente.ClienteVisualizacaoBean" />
+	
+	<input name="id" type="long"/>
+	
+	<on-start>
+		<evaluate expression="bean.iniciar(id)" />
+	</on-start>	 
+	 
+	<view-state id="clienteVisualizacao" />
+	
+</flow>

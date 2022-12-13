@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>ToolBar</title>
+</h:head>
+
+<h:body>
+	<h1>Barra de ferramentas e menu-suspenso</h1>
+	<p:separator></p:separator>
+	<h:form id="form">
+		<p:toolbar>
+			<f:facet name="left">
+				<p:button value="Novo" icon="ui-icon-document"></p:button>
+				<p:button value="Abrir" icon="ui-icon-folder-open"></p:button>
+				<span class="ui-separator"> 
+				<span class="ui-icon ui-icon-grip-dotted-vertical"></span>
+				</span>
+				<p:button  icon="ui-icon-disk"></p:button>
+				<p:button  icon="ui-icon-trash"></p:button>
+				<p:button  icon="ui-icon-print"></p:button>
+			</f:facet>
+
+			<f:facet name="right">
+				<p:menuButton value="Menu">
+					<p:menuitem value="Salvar" icon="ui-icon-disk"></p:menuitem>
+					<p:menuitem value="Alterar" icon="ui-icon-arrowrefresh-1-w"></p:menuitem>
+					<p:menuitem value="Deletar" icon="ui-icon-trash"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+
+		</p:toolbar>
+	</h:form>
+</h:body>
+</html>

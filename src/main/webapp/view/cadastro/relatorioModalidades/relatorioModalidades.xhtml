@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition template="/view/template/padrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:caesb="http://caesb/jsf">
+
+	<ui:define name="titulo">Relatório de Modalidades</ui:define>	
+	<ui:define name="conteudo">								
+										
+		<h:form id="form1">		
+			<p>Clique no botão abaixo para gerar o relatório (PDF):</p>
+					
+			<p:commandButton value="Gerar relatório" update=":form1" actionListener="#{rmBean.gerarRelatorio}" 
+				oncomplete="if (args.download) jQuery('.btDownload').click()" />
+		</h:form>
+				
+		<h:form id="form2" target="_blank">		
+			<p:commandButton styleClass="btDownload" actionListener="#{rmBean.download}" 
+				ajax="false" style="display: none" />	
+		</h:form>
+		
+	</ui:define>
+	
+</ui:composition>
