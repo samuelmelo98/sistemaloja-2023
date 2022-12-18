@@ -44,12 +44,12 @@
 		<h:form id="form1">
 			<p:progressBar id="progressBarIndeterminate" style="height:6px"
 				mode="indeterminate" />
-			<p:growl id="msg" sticky="false" showDetail="true" life="2000" />
+			<p:growl id="msg" sticky="false" showDetail="true" life="2000"  />
 
 			<p:wizard flowListener="#{clienteBean.onFlowProcess}">
 				<p:tab id="personal" title="Cadastro de Cliente">
 					<p:panel header="Dados do Cliente">
-						<p:messages />
+						
 						<h:panelGrid columns="2" columnClasses="label, value">
 							<h:outputText value="Nome Cliente: *" />
 							<p:inputText value="#{clienteBean.cliente.nomeCliente}"
@@ -167,8 +167,9 @@
 						</h:panelGrid>
 
 						<p:commandButton value="Salvar"
-							action="#{clienteBean.adicionarCliente}" update="msg clientes"
-							process="@this" />
+							action="#{clienteBean.adicionarCliente}" update="msg clientes form1"
+							process="@this"
+							 />
 
 					</p:panel>
 				</p:tab>
@@ -177,12 +178,12 @@
 
 		<h:form id="testt">
 			<p:commandButton value="teste"
-				action="#{clienteBean.pesquisarClientes}" update="clientes"></p:commandButton>
+				action="#{clienteBean.pesquisarClientes}" update="clientes form1"></p:commandButton>
 
 		</h:form>
 
 
-		<div class="card">
+		<div id="tabela_cliente" class="card">
 			<p:panel header="Clientes Cadastrados">
 				<p:dataTable var="valor" value="#{clienteBean.clientes}"
 					id="clientes" paginatorPosition="bottom" rowsPerPageTemplate="2,5,10" rows="10">
@@ -201,11 +202,23 @@
 					<p:column headerText="Email">
 						<h:outputText value="#{valor.emailCliente}" />
 					</p:column>
+					<p:column>
+						<h:form>
+						<p:growl id="msg" sticky="false" showDetail="true" life="2000"  />
+							<p:commandButton value="Excluir"
+								actionListener="#{clienteBean.removerBase(valor)}"
+								onclick="if (!confirm('deseja excluir')) return false"
+								update="clientes "></p:commandButton>
+						</h:form>
+					</p:column>
 				</p:dataTable>
 			</p:panel>
 		</div>
 
 	</div>
+	<h:form>
+		<p:commandButton value="Excluir" actionListener="#" onclick="if (!confirm('deseja excluir')) return false"></p:commandButton>
+	</h:form>
 	<div>
 
 

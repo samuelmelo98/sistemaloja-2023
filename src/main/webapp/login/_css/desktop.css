@@ -1,0 +1,50 @@
+@charset "UTF-8";
+body{
+	background-image: url("../imagens/img_login.jpg");
+	background-repeat: true;
+	
+	
+}
+
+/* aplica class */
+.l{
+	width: 500px;
+	background-color: white;
+	border-color:black;
+	height: 500px;
+	background-position:  center center;
+	
+}
+.panel{
+	position:relative;
+	width: 500px;
+	height: 500px;
+	
+}
+/* pega id */
+#div_login{
+	background-color: blue;
+	position: fixed;
+	left: 25%;
+	margin-top: 7%;
+	width: 500px;
+	background-color: white;
+	border-color:black;
+	height: 500px;
+	background-position:  center center;
+	
+}
+.panel_botoes{
+	position: inherit ;
+	left: 50%;
+	
+}
+.form{
+	
+	height:600px;
+}
+.botao_salvar{
+	
+	right: 5px;
+	
+}

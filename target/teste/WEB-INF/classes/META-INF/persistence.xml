@@ -8,6 +8,9 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
 		transaction-type="RESOURCE_LOCAL">
 
 		<class>teste.model.Cliente</class>
+		<class>teste.model.UsuarioSistemaLogin</class>
+		
+		
 
 		<properties>
 			<property name="javax.persistence.jdbc.url"

@@ -1,9 +1,13 @@
 package repositorios;
 
-
-
-
-
-public interface ClienteRepositorio  {
-
+ interface BaseDados<T>{
+	Boolean containd(T o);
+	Boolean adicionar(T o);
+	Boolean remover(T o);
+	Boolean atualizar(T o);
+ 
+	 
+		
+	
+	
 }
