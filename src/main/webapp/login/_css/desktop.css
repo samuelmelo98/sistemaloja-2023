@@ -1,7 +1,7 @@
 @charset "UTF-8";
 body{
 	background-image: url("../imagens/img_login.jpg");
-	background-repeat: true;
+	background-repeat: false;
 	
 	
 }
@@ -24,7 +24,7 @@ body{
 /* pega id */
 #div_login{
 	background-color: blue;
-	position: fixed;
+	position: relative;
 	left: 25%;
 	margin-top: 7%;
 	width: 500px;

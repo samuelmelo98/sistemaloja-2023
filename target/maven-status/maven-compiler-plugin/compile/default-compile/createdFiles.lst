@@ -1,8 +1,10 @@
 teste\model\Cliente.class
+filter\Index.class
 teste\controle\UsuarioSistemaLoginBean.class
 teste\model\Notificacao.class
 config\Config.class
 teste\service\Iniciar.class
+filter\Login.class
 repositorios\BaseDados.class
 teste\controle\UserWizard.class
 teste\controle\TesteBean.class

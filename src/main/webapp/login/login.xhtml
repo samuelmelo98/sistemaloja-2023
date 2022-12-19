@@ -4,40 +4,47 @@
 	xmlns:p="http://primefaces.org/ui" xmlns:caesb="http://caesb/jsf">
 
 <h:head>
+	<link href="login/_css/desktop.css" rel="stylesheet" media="screen" />
 	<link href="_css/desktop.css" rel="stylesheet" media="screen" />
 </h:head>
 
 
 
-<h:body> 
+<h:body>
 	<div id="div_login" class="login">
 		<h:form id="form">
 			<p:growl id="msg" sticky="false" showDetail="true" life="2000" />
+			 <p:messages id="messages" showDetail="true" closable="true">
+       				 <p:autoUpdate />
+   			 </p:messages>
 			<p:panel header="Entrada Usuário no Sistema" styleClass="panel">
 				<p:panelGrid columns="2">
 					<p:outputLabel value="Nome Usuário*"></p:outputLabel>
-					<p:inputText
-						value="#{usuarioSistemaLoginBean.usuariosistemalogin.usuarioNome}" placeholder="Nome de login"/>
+					<p:inputText id="nomeUsuario"
+						value="#{usuarioSistemaLoginBean.usuariosistemalogin.usuarioNome}"
+						placeholder="Nome de login" />
 					<p:outputLabel value="Senha*"></p:outputLabel>
 					<p:password
-						value="#{usuarioSistemaLoginBean.usuariosistemalogin.usuarioSenha}" placeholder="Senha" />
+						value="#{usuarioSistemaLoginBean.usuariosistemalogin.usuarioSenha}"
+						placeholder="Senha" />
 
 					<p:panelGrid columns="1" styleClass="panel_botoes">
 						<p:columnGroup>
 							<p:column>
 								<p:commandButton value="Entrar"
-									actionListener="#{usuarioSistemaLoginBean.validarUsuario}"
-									update="form"  styleClass="botao_salvar"/>
+									action="#{usuarioSistemaLoginBean.validarUsuario2}"
+									update="form" styleClass="botao_salvar" />
 							</p:column>
 							<p:column>
 								<p:commandButton value="Limpar"
 									actionListener="#{usuarioSistemaLoginBean.limpar}"
 									update="form" />
 							</p:column>
-							<p:column>
+							<!--  <p:column>
 								<p:button value="ir " href="../index.xhtml?id=#{null}"></p:button>
 								<p:button value="ir2 " href="../teste/index.xhtml?id=#{null}"></p:button>
-							</p:column>
+								  </p:column>
+							-->
 						</p:columnGroup>
 					</p:panelGrid>
 				</p:panelGrid>

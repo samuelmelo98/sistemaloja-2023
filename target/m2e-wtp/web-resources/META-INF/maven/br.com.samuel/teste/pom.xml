@@ -10,7 +10,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-
+<!--  
 	<profiles>
 		<profile>
 			<id>desenvolvimento</id>
@@ -18,7 +18,7 @@
 				<finalName>${project.name}</finalName>
 			</build>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<activeByDefault>false</activeByDefault>
 			</activation>
 			<properties>
 				<app.ambiente>desenvolvimento</app.ambiente>
@@ -28,7 +28,7 @@
 		</profile>
 
 	</profiles>
-
+-->
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.glassfish/javax.faces -->
 		<!--dependency> <groupId>org.glassfish</groupId> <artifactId>javax.faces</artifactId> 
@@ -110,6 +110,14 @@
 			<artifactId>maven-compiler-plugin</artifactId>
 			<version>3.10.1</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>4.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+
 
 
 

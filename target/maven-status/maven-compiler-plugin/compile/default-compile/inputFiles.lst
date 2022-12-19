@@ -2,6 +2,7 @@ C:\Users\Samuel\Desktop\App\teste\src\main\java\teste\service\UsuarioSistemaLogi
 C:\Users\Samuel\Desktop\App\teste\src\main\java\teste\model\UsuarioSistemaLogin.java
 C:\Users\Samuel\Desktop\App\teste\src\main\java\teste\model\Cliente.java
 C:\Users\Samuel\Desktop\App\teste\src\main\java\teste\service\ClienteService.java
+C:\Users\Samuel\Desktop\App\teste\src\main\java\filter\Login.java
 C:\Users\Samuel\Desktop\App\teste\src\main\java\config\Config.java
 C:\Users\Samuel\Desktop\App\teste\src\main\java\teste\controle\UsuarioSistemaLoginBean.java
 C:\Users\Samuel\Desktop\App\teste\src\main\java\repositorios\ClienteRepositorio.java
@@ -10,6 +11,7 @@ C:\Users\Samuel\Desktop\App\teste\src\main\java\teste\controle\UserWizard.java
 C:\Users\Samuel\Desktop\App\teste\src\main\java\teste\model\Pessoa.java
 C:\Users\Samuel\Desktop\App\teste\src\main\java\teste\model\User.java
 C:\Users\Samuel\Desktop\App\teste\src\main\java\teste\controle\PessoaBean.java
+C:\Users\Samuel\Desktop\App\teste\src\main\java\filter\Index.java
 C:\Users\Samuel\Desktop\App\teste\src\main\java\teste\service\Iniciar.java
 C:\Users\Samuel\Desktop\App\teste\src\main\java\teste\controle\ClienteBean.java
 C:\Users\Samuel\Desktop\App\teste\src\main\java\teste\model\Notificacao.java
